@@ -1,0 +1,46 @@
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Interfaces
+@using MudBlazor
+@inject TranslatorService Translator
+@inject IErrorHandler ApiErrorHandler
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IAlertNotifier AlertProvider
+<MudTextField T="string" @bind-Value="@userEmailAddress" Variant="Variant.Outlined" Label="@Translator["UserEmail"]" Adornment="Adornment.End" AdornmentIcon="@StatusIcon" AdornmentColor="@StatusColor" OnAdornmentClick="@(async () => await QueryUserAsync())"  AdornmentAriaLabel="Search" Class="rounded-xl" />
+
+@code {
+
+    [Parameter]
+    public bool RelationshipRequired { get; set; }
+
+    [Parameter]
+    public EventCallback<User> UserSelected { get; set; }
+
+    private string userEmailAddress;
+    private string? userId;
+    
+    private async Task QueryUserAsync()
+    {
+        userId = null;
+        if (!string.IsNullOrEmpty(userEmailAddress))
+        {
+            var client = await SfinxApiBuilder.GetClientAsync();
+            var usersApiClient = new UsersApiClient(client);
+            var queryResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient?.GetUsersAsync(userEmailAddress));
+
+            if (queryResult.Success && queryResult.Response.Users.Count == 1)
+            {
+                var user = queryResult.Response.Users.Single(); 
+                userId = user.Id;
+                await UserSelected.InvokeAsync(user);
+            }
+            else
+            {
+                await AlertProvider.ShowAlertAsync(Translator["UserNotFoundByEmail"], Translator["UserNotFoundByEmail"], false);
+            }
+        }
+    }
+
+    private Color StatusColor => string.IsNullOrEmpty(userId) ? Color.Primary : Color.Secondary;
+    private string StatusIcon => string.IsNullOrEmpty(userId) ? Icons.Material.Filled.Search : Icons.Material.Filled.Check;
+}

@@ -1,0 +1,172 @@
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Components.General
+@using Sfinx.App.Shared.Extensions
+@using Sfinx.App.Shared.Services.MultiLinguality
+@inject IUserProfileManager ProfileManager
+@inject TranslatorService Localizer
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject IThemeManager ThemeManager
+@inject IDialogService DialogService
+@inject ICrashReportHandler CrashReportHandler
+<MudGrid>
+    <MudItem xs="12">
+        @if (LockState?.BatteryPercentage != null)
+        {
+            <br/>
+            <MudProgressLinear Min="0" Max="100" Value="@((double) LockState.BatteryPercentage)" Color="@BatteryColor"></MudProgressLinear>
+        }
+        else
+        {
+            <hr/>
+        }
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h3">@UserLock.FriendlyName</MudText>
+        @if (Status != LockStatus.Unknown)
+        {
+            <br/>
+            <MudText Typo="Typo.caption">@Localizer[$"LockStatus/{Status}"]</MudText>
+        }
+        @if (!string.IsNullOrEmpty(lockConnectionError))
+        {
+            <br/>
+            <MudText Typo="Typo.caption" Color="Color.Error">@lockConnectionError</MudText>
+        }
+        @if (AuthenticationState != null && AuthenticationState?.TokenState != TokenState.Valid)
+        {
+            <br/>
+            <MudText Color="Color.Warning" Typo="Typo.body2">@Localizer[AuthenticationState.TokenState.ToString()]</MudText>
+            <LockVendorConnection Warning="true" RedirectUri='@($"sfinx://locks/{UserLock.Id}?forcerefresh=true")' VendorId="@UserLock.ProductType.VendorId" ProductTypeId="@UserLock.ProductType.VendorProductId"></LockVendorConnection>
+        }
+        else
+        {
+            <br/>
+            <MudText Typo="Typo.caption" Color="Color.Tertiary">@(IsOwner ? Localizer["You own this lock"] : string.Format(Localizer["OwnedBy"], UserLock.Owner.DisplayName))</MudText>
+        }
+    </MudItem>
+    <MudItem xs="1"></MudItem>
+    <MudItem xs="11">
+        @if (LockKeys.Any())
+        {
+            @foreach (var userKey in LockKeys)
+            {
+                <KeyComponent Key="@userKey"/>
+            }
+        }
+        else
+        {
+            if (IsOwner)
+            {
+                <SfinxButton FullWidth="true" OnClick="@(async () => await OpenLockAsAdminAsync())">@Localizer["OpenLock"] (@Localizer["Owner"])</SfinxButton>
+            }
+            else
+            {
+                <MudText Typo="Typo.caption" Color="Color.Warning">@(IsOwner ? Localizer["NoKeysFoundOwner"] : Localizer["NoKeysFoundUser"])</MudText>
+            }
+        }
+    </MudItem>
+    <MudItem xs="12"></MudItem>
+    <MudItem xs="1"></MudItem>
+    <MudItem xs="11">
+        <MudText Typo="Typo.caption" Color="Color.Tertiary">@UserLock.ProductType.VendorId.ToUpper() - @UserLock.ProductType.ProductName</MudText>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public Lock UserLock { get; set; } = new Lock();
+
+    [Parameter]
+    public IEnumerable<Key> Keys { get; set; } = new List<Key>();
+
+    private IEnumerable<Key> LockKeys => Keys.Where(key => key.Lock.Id.Equals(UserLock.Id));
+
+    private string? userId;
+    private string? lockConnectionError = null;
+    private RemoteLockState? LockState = null;
+    private VendorAuthenticationState? AuthenticationState = null;
+
+    private bool IsOwner => userId?.Equals(UserLock.Owner?.Id) ?? false;
+
+    private string LockIcon => ThemeManager.GetLockIcon(Status, AuthenticationState, !string.IsNullOrEmpty(lockConnectionError));
+
+    private Color BatteryColor => ThemeManager.GetBatteryColor(LockState?.BatteryLevel, AuthenticationState);
+
+    private Color LockColor => ThemeManager.GetLockColor(Status, AuthenticationState, !string.IsNullOrEmpty(lockConnectionError));
+
+    private LockStatus Status => LockState?.Status ?? LockStatus.Unknown;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userId = await ProfileManager.GetUserIdAsync();
+        var client = await SfinxApiBuilder.GetClientAsync();
+        await LoadStatusAsync(client);
+        if (!Keys.Any())
+        {
+            await LoadKeysForLockAsync(client);
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadStatusAsync(HttpClient client)
+    {
+        var locksApiClient = new LocksApiClient(client);
+
+        var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync
+            (async () => await locksApiClient.GetLockStatusAsync(UserLock.Id));
+        if (apiResult.Success)
+        {
+            AuthenticationState = apiResult.Response.VendorAuthenticationState;
+            LockState = apiResult.Response.RemoteLockState;
+        }
+        else
+        {
+            lockConnectionError = Localizer["LockErrorConnection"];
+        }
+    }
+
+    private async Task LoadKeysForLockAsync(HttpClient client)
+    {
+        var locksApiClient = new LocksApiClient(client);
+        var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync
+            (async () => await locksApiClient.GetKeysAsync(UserLock.Id));
+        if (apiResult.Success)
+        {
+            Keys = apiResult.Response.Keys;
+        }
+        else
+        {
+            lockConnectionError = Localizer["LockErrorConnection"];
+        }
+    }
+
+    private async Task OpenLockAsAdminAsync()
+    {
+        if (await DialogService.AskConfirmationAsync(Localizer, Localizer["Confirm/OpenLock"]))
+        {
+            var client = await SfinxApiBuilder.GetClientAsync();
+            var locksApiClient = new LocksApiClient(client);
+            try
+            {
+                await locksApiClient.UnlockAsync(UserLock?.Id, new UnlockRequest {});
+            }
+            catch
+                (ApiException<ProblemDetails> e)
+            {
+                await CrashReportHandler.HandleExceptionAsync(e);
+                await ApiErrorHandler?.ProcessError(e);
+            }
+            catch
+                (System.Exception e)
+            {
+                await CrashReportHandler.HandleExceptionAsync(e);
+                await ApiErrorHandler?.ProcessError(e);
+            }
+        }
+    }
+
+}

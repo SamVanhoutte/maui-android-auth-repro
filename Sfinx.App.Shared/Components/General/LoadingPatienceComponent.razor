@@ -1,0 +1,18 @@
+@using MudBlazor
+<MudContainer>
+    <MudImage Src="images/sfinx-waiting.gif" ObjectPosition="ObjectPosition.Center" Height="@imageHeight"></MudImage>
+    @* <MudProgressCircular Color="Color.Success" Indeterminate="true" Class="my-7"/> *@
+    @if (!string.IsNullOrEmpty(WaitingMessage))
+    {
+        <MudText>@WaitingMessage</MudText>
+    }
+</MudContainer>
+@code {
+    [Parameter]
+    public string? WaitingMessage { get; set; }
+
+    [Parameter]
+    public bool Small { get; set; }
+
+    private int imageHeight => Small ? 20 : 100;
+}

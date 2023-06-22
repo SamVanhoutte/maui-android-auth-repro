@@ -1,0 +1,50 @@
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Microsoft.Identity.Client
+@inject IUserProfileManager ProfileManager
+@inject NavigationManager NavigationManager
+@inject TranslatorService Translator
+<MudGrid>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h1">@Translator["SignInQuestion"]</MudText>
+    </MudItem>
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <MudText Typo="Typo.caption" Color="Color.Warning">@error</MudText>
+    }
+    <MudItem xs="9">
+        <MudText Typo="Typo.body1" Color="Color.Primary">
+            @Translator["SignInExplanation"]
+        </MudText>
+    </MudItem>
+    <MudItem xs="3"></MudItem>
+    <MudItem xs="12" Class="d-flex justify-center">
+        <SfinxButton OnClick="@(async () => await LoginAsync())" FullWidth="true">@Translator["Sign In"]</SfinxButton>
+    </MudItem>
+</MudGrid>
+<MudLink>
+    
+
+</MudLink>
+
+@code {
+    private string? error = null;
+
+    private async Task LoginAsync()
+    {
+        try
+        {
+            await ProfileManager.GetBearerTokenAsync(true);
+            NavigationManager.NavigateTo("/", true);
+        }
+        catch (MsalClientException mse) when (mse.ErrorCode.Equals("authentication_canceled"))
+        {
+            // User pressed cancel, just ignore, nothing special
+        }
+        catch (Exception authException)
+        {
+            error = authException.Message;
+        }
+    }
+
+}

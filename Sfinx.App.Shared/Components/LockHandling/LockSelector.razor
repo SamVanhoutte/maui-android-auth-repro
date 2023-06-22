@@ -1,0 +1,79 @@
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Models.Registration
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Sfinx.Backend.WebAPI.Client
+@using Exception = System.Exception
+@using Sfinx.App.Shared.Components.General
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IUserProfileManager UserProfileManager
+@inject IErrorHandler ApiErrorHandler
+@inject TranslatorService Localizer
+@if (vendorLocks == null)
+{
+    if (retrievalAttempted)
+    {
+        <MudText Typo="Typo.body1">@string.Format(Localizer["Make sure the authorization is completed before retrieving your locks."], VendorId)</MudText>
+        <SfinxButton OnClick="@(async () => await LoadLocksFromVendorAsync(false))">@Localizer["Retrieve locks"]</SfinxButton>
+    }
+    else
+    {
+        <LoadingPatienceComponent WaitingMessage='@string.Format(Localizer["Retrieving your locks from the vendor"], VendorId)'/>
+    }
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <SquareSelectionContainer Items="@(vendorLocks.Select(v => new SquareSelectionOption(v.FriendlyName, "images/locktype_nuki_30.jpg", v)))"
+                                      OnSelectedItem="@(async (vl) => await SelectLockByValue(vl))">
+            </SquareSelectionContainer>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+
+    [Parameter]
+    public EventCallback<VendorLock> LockSelected { get; set; }
+
+    [Parameter]
+    public string VendorId { get; set; } = null!;
+
+    private IVendorsApiClient? vendorsApiClient;
+    private ICollection<VendorLock>? vendorLocks;
+    private bool retrievalAttempted = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadLocksFromVendorAsync(true);
+    }
+
+    private async Task LoadLocksFromVendorAsync(bool suppressError)
+    {
+        if (UserProfileManager != null)
+        {
+            var userId = await UserProfileManager.GetUserIdAsync();
+
+            var client = await SfinxApiBuilder.GetClientAsync();
+            vendorsApiClient = new VendorsApiClient(client);
+            if (!string.IsNullOrEmpty(VendorId))
+            {
+                var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await vendorsApiClient.GetVendorLocksForUserAsync(VendorId, userId), suppressError);
+                if (apiResult.Success)
+                {
+                    vendorLocks = apiResult.Response?.VendorLocks;
+                    StateHasChanged();
+                }
+                retrievalAttempted = true;
+            }
+        }
+    }
+
+    private async Task SelectLockByValue(object vendorLock)
+    {
+        if (vendorLock is VendorLock vl)
+        {
+            await LockSelected.InvokeAsync(vl);
+        }
+    }
+}

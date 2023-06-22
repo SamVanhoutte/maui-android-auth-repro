@@ -1,0 +1,27 @@
+@page "/locks/add/05"
+@using Sfinx.App.Shared.Services.Storage
+@inject TranslatorService Localizer
+@inject SfinxLockRegistrationState WizardState
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <MudGrid>
+                <MudItem xs="11" lg="8">
+                    <MudText Typo="Typo.body1">@string.Format(Localizer["CompletionMessage"], WizardState.OrganizationData?.OrganizationName, WizardState.OrganizationData?.ProjectName)</MudText>
+                </MudItem>
+                <MudItem xs="1" lg="4" />
+                <MudItem xs="12">
+                    <SfinxButton Href="mylocks?refresh=true">@Localizer["See your locks"]</SfinxButton>
+                </MudItem>
+            </MudGrid>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+
+
+}

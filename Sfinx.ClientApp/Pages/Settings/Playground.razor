@@ -1,0 +1,87 @@
+@inject TranslatorService Localizer
+@inject ICrashReportHandler CrashReportHandler
+@inject SfinxLockRegistrationState LockRegistrationState
+@inject IUserProfileManager ProfileManager
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IAppStorageProvider AppStorageProvider
+@inject IStorageCache AppStorageCache
+@page "/playground"
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Services.Storage
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Extensions
+@attribute [Authorize]
+<MudGrid Spacing="0">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h1">@Localizer.GetTitle()</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h2">@Localizer["Find lock by reference"]</MudText>
+    </MudItem>
+    @if (organizations != null)
+    {
+        <MudItem xs="12">
+            <MudSelect T="string" @ref="OrganizationSelect" Label="@Localizer["Organization"]" AnchorOrigin="Origin.BottomCenter">
+                @foreach (var organization in organizations)
+                {
+                    <MudSelectItem Value="@organization.Id">@organization.DisplayName</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField T="string" Immediate="true" Label='@Localizer["ExternalReference"]' @ref="ReferenceTextField"></MudTextField>
+        </MudItem>
+        <MudItem xs="12">
+            <hr/>
+        </MudItem>
+        <MudItem xs="12">
+            <SfinxButton FullWidth="true" OnClick="@SearchReference">@Localizer["Search"]</SfinxButton>
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12">
+            <LoadingPatienceComponent WaitingMessage="Connections/Patience" Small="true"></LoadingPatienceComponent>
+        </MudItem>
+    }
+    <MudItem xs="12">
+        <SfinxButton Mode="SfinxButton.ButtonMode.Subtle" Href="settings">@Localizer["Back"]</SfinxButton>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    private IOrganizationsApiClient organizationsApiClient;
+    private ICollection<Organization> organizations;
+    private MudSelect<string> OrganizationSelect;
+    private MudTextField<string> ReferenceTextField;
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (organizationsApiClient == null)
+        {
+            var client = await SfinxApiBuilder.GetClientAsync();
+            organizationsApiClient = new OrganizationsApiClient(client);
+        }
+        var apiResponse = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await organizationsApiClient.GetOrganizationsAsync());
+        if (apiResponse.Success)
+        {
+            organizations = apiResponse.Response.Organizations;
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private void SearchReference()
+    {
+        var selectedOrganizationId= OrganizationSelect.Value;
+        var lockReference = ReferenceTextField.Value;
+        var url = $"/orglock/{selectedOrganizationId}/{lockReference}";
+        NavigationManager.NavigateTo(url);
+    }
+}

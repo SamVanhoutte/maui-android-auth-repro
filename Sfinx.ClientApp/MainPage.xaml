@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:local="clr-namespace:Sfinx.ClientApp"
+             x:Class="Sfinx.ClientApp.MainPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}" 
+             NavigatedFrom="MainPage_OnNavigatedFrom" 
+             NavigatedTo="MainPage_OnNavigatedTo" 
+             NavigatingFrom="MainPage_OnNavigatingFrom">
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#132040" StatusBarStyle="Default"></mct:StatusBarBehavior>
+    </Page.Behaviors>
+    <RefreshView x:Name="RefreshView" Refreshing="RefreshView_Refreshing">
+        <BlazorWebView HostPage="wwwroot/index.html" x:Name="WebView" UrlLoading="WebView_OnUrlLoading"
+                       BlazorWebViewInitialized="WebView_OnBlazorWebViewInitialized"
+                       BlazorWebViewInitializing="WebView_OnBlazorWebViewInitializing">
+            <BlazorWebView.RootComponents>
+                <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
+            </BlazorWebView.RootComponents>
+        </BlazorWebView>
+    </RefreshView>
+</ContentPage>
+

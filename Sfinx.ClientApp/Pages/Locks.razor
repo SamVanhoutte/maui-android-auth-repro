@@ -1,0 +1,140 @@
+@page "/"
+@page "/mylocks"
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Interfaces
+@inherits RefreshablePageBase
+@inject IErrorHandler ApiErrorHandler
+@inject TranslatorService Localizer
+@inject ILockService LockService
+@inject IUserProfileManager ProfileManager
+@inject ICrashReportHandler CrashReportHandler
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <MudGrid Spacing="0">
+                <MudItem xs="10">
+                    <MudText Typo="Typo.h1">@Localizer.GetTitle()</MudText>
+                </MudItem>
+                <MudItem xs="2">
+                    <MudIconButton Icon="@Icons.Material.Filled.AddLocation" Href="locks/add/01"/>
+                </MudItem>
+
+                @if (UserLocks != null && UserKeys != null)
+                {
+                    if (LockCount == 0)
+                    {
+                        <LockRegistrationComponent/>
+                    }
+                    else
+                    {
+                        if (LockCount > 1)
+                        {
+                            <MudCarousel Class="mud-width-full" Style="height: 70vh;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
+                                @foreach (var userLock in UserLocks)
+                                {
+                                    <MudCarouselItem Transition="Transition.Slide">
+                                        <LockHandler Keys="@UserKeys" UserLock="@userLock"></LockHandler>
+                                    </MudCarouselItem>
+                                }
+                                @foreach (var guestLock in GuestLocks)
+                                {
+                                    <MudCarouselItem Transition="Transition.Slide">
+                                        <hr/>
+                                        <MudText Typo="Typo.h3">@guestLock.Value.First().Lock.FriendlyName</MudText>
+                                        @foreach (var userKey in guestLock.Value)
+                                        {
+                                            <KeyComponent Key="@userKey"/>
+                                        }
+                                    </MudCarouselItem>
+                                }
+                            </MudCarousel>
+                        }
+                        else
+                        {
+                            <div style="height:30px">&nbsp;</div>
+                            <LockHandler Keys="@UserKeys" UserLock="@UserLocks.First()"></LockHandler>
+                        }
+                    }
+                }
+                else
+                {
+                    @if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        <LoadingPatienceComponent WaitingMessage="@Localizer["Locks/Patience"]"/>
+                    }
+                    else
+                    {
+                        <ErrorDisplay ErrorMessage="@errorMessage"/>
+                    }
+                }
+            </MudGrid>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
+@code
+{
+    private IUsersApiClient usersApiClient = null!;
+    public IEnumerable<Lock>? UserLocks { get; set; }
+    public IEnumerable<Key>? UserKeys { get; set; }
+    private string errorMessage = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (await ProfileManager.IsAuthenticatedAsync())
+        {
+            //base.CheckRequestedPage();
+            var lockResponse = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await LockService.GetLocksAsync(ShouldRefresh));
+            var keyResponse = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await LockService.GetKeysAsync(forceRefresh: ShouldRefresh));
+            UserLocks = lockResponse.Response;
+            UserKeys = keyResponse.Response;
+            errorMessage = string.Empty;
+            if (!lockResponse.Success)
+            {
+                errorMessage += lockResponse.ErrorMessage;
+            }
+            if (!keyResponse.Success)
+            {
+                errorMessage += keyResponse.ErrorMessage;
+            }
+        }
+    }
+
+    private int LockCount => UserLocks?.Count() ?? 0 + GuestLocks?.Count() ?? 0;
+
+    private IDictionary<string, IEnumerable<Key>> GuestLocks
+    {
+        get
+        {
+            var guestKeys = new Dictionary<string, IEnumerable<Key>>();
+            if (UserKeys == null) return guestKeys;
+            if (UserLocks == null) return guestKeys;
+            foreach (var guestLock in UserKeys
+                .Where(uk => !(UserLocks?.Any(ul => ul.Id.Equals(uk.Lock.Id)) ?? false))
+                .GroupBy(uk => uk.Lock.Id))
+            {
+                guestKeys.Add(guestLock.Key, guestLock.AsEnumerable());
+            }
+            return guestKeys;
+        }
+    }
+
+    private Dictionary<string, bool> LockTypes
+    {
+        get
+        {
+            var lockTypes = new Dictionary<string, bool>();
+            if (UserKeys == null) return lockTypes;
+            if (UserLocks == null) return lockTypes;
+            foreach (var @lock in UserKeys.Select(uk => uk.Lock).DistinctBy(lck => lck.Id))
+            {
+                lockTypes.Add(@lock.Id, UserLocks.Any(ul => ul.Id.Equals(@lock.Id)));
+            }
+            return lockTypes;
+        }
+    }
+}

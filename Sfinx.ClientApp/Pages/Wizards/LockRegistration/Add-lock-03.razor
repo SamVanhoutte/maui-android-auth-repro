@@ -1,0 +1,49 @@
+@page "/locks/add/03"
+@using Sfinx.App.Shared.Services.Storage
+@using Sfinx.App.Shared.Interfaces
+@inject TranslatorService Localizer
+@inject SfinxLockRegistrationState WizardState
+@inject NavigationManager NavigationManager
+@inject ICrashReportHandler CrashReportHandler
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            @if (!string.IsNullOrEmpty(WizardState.ProductType?.VendorId))
+            {
+                <MudGrid Spacing="3" Justify="Justify.FlexStart">
+                    <MudItem lg="7" xs="11">
+                        <MudText Typo="Typo.subtitle1">@string.Format(Localizer["Connect your account to Sfinx"], WizardState.ProductType.VendorId)</MudText>
+                    </MudItem>
+                    <MudItem lg="5" xs="1"/>
+                    <MudItem lg="7" xs="11">
+                        <MudText Align="Align.Left" Typo="Typo.body1">@string.Format(Localizer["Give authorization to Sfinx to use your smart lock"], WizardState.ProductType?.VendorId)</MudText>
+                    </MudItem>
+                    <MudItem lg="5" xs="1"/>
+                    <MudItem lg="7" xs="11">
+                        <LockVendorConnection RedirectUri='@($"sfinx://locks/add/04/{WizardState.ProductType?.VendorId}")' VendorLinkClicked="@(async()=> await VendorClickedAsync())" LockType="@WizardState.ProductType"></LockVendorConnection>
+                    </MudItem>
+                    <MudItem lg="5" xs="1"/>
+                </MudGrid>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    private IEnumerable<string> connectedVendors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await WizardState.EnsureDataLoadedAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task VendorClickedAsync()
+    {
+        NavigationManager.NavigateTo("locks/add/04");
+    }
+
+}

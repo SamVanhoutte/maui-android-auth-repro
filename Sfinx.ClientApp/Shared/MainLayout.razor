@@ -1,0 +1,42 @@
+﻿@using Sfinx.App.Shared.Interfaces
+@inherits LayoutComponentBase
+@inject IThemeManager ThemeManager
+@inject NavigationManager NavigationManager
+@inject IErrorHandler ErrorHandler
+<MudThemeProvider DefaultScrollbar="true" IsDarkMode="false" Theme="@ThemeManager.DefaultTheme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+@try
+{
+    <div class="page">
+        <div class="sidebar">
+            <NavMenu/>
+        </div>
+
+        <main>
+            <div class="top-row px-4">
+                <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            </div>
+            <article class="content px-4">
+                @Body
+            </article>
+        </main>
+    </div>
+}
+catch (System.Exception exception)
+{
+    ErrorHandler.ProcessError(exception).Wait();
+}
+@code{
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(NavigationManager.Uri);
+        base.OnInitialized();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("Redirect here ?");
+    }
+
+}

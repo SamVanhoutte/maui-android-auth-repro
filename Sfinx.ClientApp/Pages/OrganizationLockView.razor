@@ -1,0 +1,111 @@
+@page "/orglock/{organizationId}/{LockReference}"
+@inherits RefreshablePageBase
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Interfaces
+@inject IErrorHandler ApiErrorHandler
+@inject TranslatorService Localizer
+@inject ILockService LockService
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <MudGrid Spacing="0">
+                <MudItem xs="12">
+                    <MudText Typo="Typo.caption">@Localizer["ExternalReference"]</MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h3">@LockReference</MudText>
+                </MudItem>
+                @if (UserLock != null && UserKeys != null)
+                {
+                    <div style="height:30px">&nbsp;</div>
+                    <LockHandler UserLock="@UserLock"></LockHandler>
+                }
+                else
+                {
+                    @if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        <LoadingPatienceComponent WaitingMessage="@Localizer["Locks/Patience"]"/>
+                    }
+                    else
+                    {
+                        <ErrorDisplay ErrorMessage="@errorMessage"/>
+                    }
+                }
+                <MudItem xs="12">
+                    <div style="height:30px">&nbsp;</div>
+                    <SfinxButton FullWidth="true" OnClick="@(async() => await RefreshLockAsync())">@Localizer["Refresh"]</SfinxButton>                    
+                </MudItem>
+            </MudGrid>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
+@code
+{
+    [Parameter]
+    public string LockReference { get; set; }
+
+    [Parameter]
+    public string OrganizationId { get; set; }
+
+    private IUsersApiClient usersApiClient = null!;
+    public Lock? UserLock { get; set; }
+    public IEnumerable<Key>? UserKeys { get; set; }
+    private string errorMessage = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        errorMessage = string.Empty;
+        await LoadLockAsync(ShouldRefresh);
+    }
+
+    private async Task LoadLockAsync(bool shouldRefresh)
+    {
+        if (shouldRefresh)
+        {
+            UserLock = null;
+            UserKeys = null;
+        }
+        var lockResponse = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await LockService.GetLockByReferenceAsync(OrganizationId, LockReference, shouldRefresh));
+        if (lockResponse.Success)
+        {
+            if (lockResponse.Response == null)
+            {
+                errorMessage = Localizer["LockNotFound"];
+                return;
+            }
+            UserLock = FromOrganizationLock(lockResponse.Response);
+            var keyResponse = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await LockService.GetKeysAsync(UserLock.Id, shouldRefresh));
+            if (keyResponse.Success)
+            {
+                UserKeys = keyResponse.Response;
+            }
+            else
+            {
+                errorMessage += lockResponse.ErrorMessage;
+            }
+        }
+        else
+        {
+            errorMessage += lockResponse.ErrorMessage;
+        }
+    }
+
+    private Lock FromOrganizationLock(OrganizationLock orgLock)
+    {
+        return new Lock
+        {
+            Id = orgLock.Id, Location = orgLock.Location, Owner = orgLock.Owner, ProductType = orgLock.ProductType
+        };
+    }
+
+    private async Task RefreshLockAsync()
+    {
+        await LoadLockAsync(true);
+    }
+}

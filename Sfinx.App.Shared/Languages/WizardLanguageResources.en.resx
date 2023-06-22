@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Set up Sfinx" xml:space="preserve">
+        <value>Set up Sfinx</value>
+    </data>
+    <data name="Install your lock" xml:space="preserve">
+        <value>Install your lock</value>
+    </data>
+    <data name="Link lock account" xml:space="preserve">
+        <value>Link lock account</value>
+    </data>
+    <data name="Select your lock" xml:space="preserve">
+        <value>Configure lock</value>
+    </data>
+    <data name="Finish" xml:space="preserve">
+        <value>Finish</value>
+    </data>
+    <data name="Set up your smartlock" xml:space="preserve">
+        <value>Set up your smartlock</value>
+    </data>
+    <data name="Invitation code" xml:space="preserve">
+        <value>Invitation code</value>
+    </data>
+    <data name="If you have received an invitation code, please validate it below." xml:space="preserve">
+        <value>If you have received an invitation code, please validate it below.</value>
+    </data>
+    <data name="Enter validation code" xml:space="preserve">
+        <value>Enter validation code</value>
+    </data>
+    <data name="Validate code" xml:space="preserve">
+        <value>Validate code</value>
+    </data>
+    <data name="Invitation code successfully validated" xml:space="preserve">
+        <value>Invitation code successfully validated</value>
+    </data>
+    <data name="Invitation code is not valid or expired" xml:space="preserve">
+        <value>Invitation code is not valid or expired</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Register</value>
+    </data>
+    <data name="Itsme integration coming soon" xml:space="preserve">
+        <value>Itsme integration coming soon</value>
+    </data>
+    <data name="Set up your Sfinx account" xml:space="preserve">
+        <value>Set up your Sfinx account</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="Select an existing lock from the list or register a new lock" xml:space="preserve">
+        <value>Select an existing lock from the list or register a new lock</value>
+    </data>
+    <data name="Select the brand" xml:space="preserve">
+        <value>Select the brand</value>
+    </data>
+    <data name="Continue" xml:space="preserve">
+        <value>Continue</value>
+    </data>
+    <data name="Specify Lock" xml:space="preserve">
+        <value>Specify Lock</value>
+    </data>
+    <data name="Lock type selection" xml:space="preserve">
+        <value>Lock type selection</value>
+    </data>
+    <data name="foodbag/OrganizationName" xml:space="preserve">
+        <value>Foodbag</value>
+    </data>
+    <data name="foodbag/ProjectName" xml:space="preserve">
+        <value>In-home delivery</value>
+    </data>
+    <data name="foodbag/WelcomeText" xml:space="preserve">
+        <value>In this wizard we will help you enabling your smart lock, so that it will be ready for your Foodbag deliveries.  By doing so, you will get all flexibility to receive your Foodbag order and you help making this world a greener place.</value>
+    </data>
+    <data name="foodbag/SfinxRegistrationText" xml:space="preserve">
+        <value>In order to secure the access to your lock, we are using Sfinx, who will be keeping everything secure.  For this, you have to log on to your Sfinx account, or set up a new account.</value>
+    </data>
+    <data name="sfinx/OrganizationName" xml:space="preserve">
+        <value>Sfinx</value>
+    </data>
+    <data name="sfinx/ProjectName" xml:space="preserve">
+        <value>Smart locks</value>
+    </data>
+    <data name="sfinx/WelcomeText" xml:space="preserve">
+        <value>In this wizard we will help you enabling your smart lock, so that it will be ready to benefit from all services we offer.</value>
+    </data>
+    <data name="sfinx/SfinxRegistrationText" xml:space="preserve">
+        <value>With Sfinx, we will be keeping everything secure.  For this, you have to log on to your Sfinx account, or set up a new account.</value>
+    </data>
+    <data name="Register a new lock" xml:space="preserve">
+        <value>Register a new lock</value>
+    </data>
+    <data name="Retrieving supported locks" xml:space="preserve">
+        <value>Retrieving supported locks</value>
+    </data>
+    <data name="Retrieving supported products" xml:space="preserve">
+        <value>Retrieving supported products</value>
+    </data>
+    <data name="Choose your lock" xml:space="preserve">
+        <value>Choose your lock</value>
+    </data>
+    <data name="Make sure your lock is installed correctly" xml:space="preserve">
+        <value>Make sure your {0} lock is installed correctly</value>
+    </data>
+    <data name="install-01" xml:space="preserve">
+        <value>Make sure you have successfully installed your {0} lock in the right location.</value>
+    </data>
+    <data name="install-02" xml:space="preserve">
+        <value>Please make sure your lock is connected to the internet</value>
+    </data>
+    <data name="install-03" xml:space="preserve">
+        <value>Ensure your lock is registered in the app of</value>
+    </data>
+    <data name="install-04" xml:space="preserve">
+        <value>Follow the instructions to install the lock</value>
+    </data>
+    <data name="My lock is installed correctly" xml:space="preserve">
+        <value>My lock is installed correctly</value>
+    </data>
+    <data name="Connect your account to Sfinx" xml:space="preserve">
+        <value>Connect your {0} account to Sfinx</value>
+    </data>
+    <data name="Give authorization to Sfinx to use your smart lock" xml:space="preserve">
+        <value>Give authorization to Sfinx to use your connected lock by connecting your {0} account and giving access.</value>
+    </data>
+    <data name="Creating login link" xml:space="preserve">
+        <value>Creating login link...</value>
+    </data>
+    <data name="Connect account" xml:space="preserve">
+        <value>Connect {0} account</value>
+    </data>
+    <data name="You will be taken to the log-in page of" xml:space="preserve">
+        <value>You will be taken to the log-in page of</value>
+    </data>
+    <data name="Select a lock" xml:space="preserve">
+        <value>Select a lock</value>
+    </data>
+    <data name="Configure your lock" xml:space="preserve">
+        <value>Configure your lock</value>
+    </data>
+    <data name="Disclaimer" xml:space="preserve">
+        <value>By registering this lock I give {0} permission to use this lock for the sole purpose of authorized lock management.</value>
+    </data>
+    <data name="Register your lock" xml:space="preserve">
+        <value>Register your lock</value>
+    </data>
+    <data name="Retrieving your locks from the vendor" xml:space="preserve">
+        <value>Retrieving your locks from {0}...</value>
+    </data>
+    <data name="A friendly name for you to identify the lock" xml:space="preserve">
+        <value>A friendly name for you to identify the lock</value>
+    </data>
+    <data name="An optional description" xml:space="preserve">
+        <value>An optional description</value>
+    </data>
+    <data name="The unique id of your lock" xml:space="preserve">
+        <value>The unique id of your lock at {0}</value>
+    </data>
+    <data name="Reference linking your lock to the provider" xml:space="preserve">
+        <value>Reference linking your lock to {0}</value>
+    </data>
+    <data name="CompletionMessage" xml:space="preserve">
+        <value>Your lock is now set up to to be used by {0} for {1}. You can change your lock permissions anytime in the settings.</value>
+    </data>
+    <data name="See your locks" xml:space="preserve">
+        <value>See your locks</value>
+    </data>
+    <data name="foodbag/CompletionText" xml:space="preserve">
+        <value>Enjoy hassle free deliveries with Foodbag!</value>
+    </data>
+    <data name="sfinx/CompletionText" xml:space="preserve">
+        <value>Enjoy safe and secure access control with Sfinx</value>
+    </data>
+    <data name="You are all set up" xml:space="preserve">
+        <value>You are all set up</value>
+    </data>
+    <data name="MemberWelcome" xml:space="preserve">
+        <value>Hello there, and welcome aboard the Sfinx platform.  You have been invited to become a member of {0}, who is using Sfinx for their {1} project.  In this wizard we will help you getting set up in a secure way.</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>User profile</value>
+    </data>
+    <data name="MemberGuidance" xml:space="preserve">
+        <value>As a member of {0}, you will have secure access to physical locations and properties of customers.  Therefore it is important that we create a unique and secure profile for you. </value>
+    </data>
+    <data name="Security setup" xml:space="preserve">
+        <value>Security setup</value>
+    </data>
+    <data name="Security" xml:space="preserve">
+        <value>Security</value>
+    </data>
+    <data name="MemberGuidance2" xml:space="preserve">
+        <value>In the next step, you will be redirected to a logon form, where you will have to create a user name and a password that will be needed to access the Sfinx platform.</value>
+    </data>
+    <data name="MemberCompletionMessage" xml:space="preserve">
+        <value>You are now set up to use Sfinx for {0}.  We recommend you to download the Sfinx app from your app store.</value>
+    </data>
+    <data name="ProfileCompletion" xml:space="preserve">
+        <value>Please complete your profile and you'll be ready to go</value>
+    </data>
+    <data name="Playground/Title" xml:space="preserve">
+        <value>Testing playground</value>
+    </data>
+    <data name="Add permission" xml:space="preserve">
+        <value>Add permission</value>
+    </data>
+</root>

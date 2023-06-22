@@ -1,0 +1,132 @@
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Components.General
+@using Sfinx.App.Shared.Extensions
+@using Exception = System.Exception
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Sfinx.App.Shared.Interfaces
+@inject IUserProfileManager UserProfileManager
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject TranslatorService Translator
+@inject IThemeManager ThemeManager
+@inject IDialogService DialogService
+@inject IErrorHandler ApiErrorHandler
+@inject ICrashReportHandler CrashReportHandler
+
+<span class="rounded-xl" style="@GetStyle()">
+    @if (!string.IsNullOrEmpty(Key?.Lock?.Id))
+    {
+        <MudTooltip Text="@Translator["OpenLock"]">
+            <MudIconButton Icon="@Icons.Filled.LockOpen" Color="@(GetFontColor())" OnClick="@(async () => await OpenLockAsync())"></MudIconButton>
+        </MudTooltip>
+    }
+    @if (AllowEdit)
+    {
+        <MudLink Typo="Typo.caption" Color="@GetFontColor()" Href="@PageLink">@(opened ? "Door opened" : @Key?.Label)</MudLink>
+    }
+    else
+    {
+        <MudLink Typo="Typo.caption" Color="@GetFontColor()" Style="width: 100%" OnClick="@(async () => await OpenLockAsync())">@(opened ? "Door opened" : @Key?.Label)</MudLink>
+    }
+    @if (!string.IsNullOrEmpty(Key?.Lock?.Id))
+    {
+        <span>
+            <MudTooltip Text="@Translator["CloseLock"]">
+                <MudIconButton Icon="@Icons.Filled.Lock" Color="@(GetFontColor(true))" OnClick="@(async () => await CloseLockAsync())"></MudIconButton>
+            </MudTooltip>
+        </span>
+    }
+</span>
+
+@code {
+
+    private bool visible;
+    private int rating;
+    private bool opened;
+
+    [Parameter]
+    public Key? Key { get; set; }
+
+    [Parameter]
+    public bool AllowEdit { get; set; }
+
+    private ILocksApiClient? locksApiClient;
+
+    private string PageLink => $"keys/{Key?.Lock?.Id}/{Key?.Id}";
+
+    private Color GetFontColor(bool warning = false)
+    {
+        var oneTime = (Key?.OneTimeKey ?? false);
+        if (warning) return oneTime ? Color.Warning : Color.Dark;
+        return oneTime ? Color.Secondary : Color.Primary;
+    }
+
+    private string GetStyle()
+    {
+        var backColor = (Key?.OneTimeKey ?? false) ?
+            ThemeManager.DefaultTheme.Palette.Primary.Value :
+            ThemeManager.DefaultTheme.Palette.Secondary.Value;
+
+        if (opened)
+        {
+            backColor = ThemeManager.DefaultTheme.Palette.Success.Value;
+        }
+        return $"background: {backColor}; width:85%; border: 1px; align-items: center; padding: 5px; height: 50px; margin: 3px;display: inline-block;justify-content: space-between;display: flex;";
+    }
+
+    private async Task OpenLockAsync()
+    {
+        var client = await SfinxApiBuilder.GetClientAsync();
+        locksApiClient = new LocksApiClient(client);
+        try
+        {
+            if (!string.IsNullOrEmpty(Key?.Lock?.Id) && Key != null)
+            {
+                if (await DialogService.AskConfirmationAsync(Translator, Translator["Confirm/OpenLock"]))
+                {
+                    var keysResponse = await locksApiClient.GetKeyAsync(Key?.Lock?.Id, Key.Id);
+                    await locksApiClient.UnlockAsync(Key?.Lock?.Id, new UnlockRequest {Token = keysResponse.Token});
+                    opened = true;
+                }
+            }
+        }
+        catch (ApiException<ProblemDetails> e)
+        {
+            await CrashReportHandler.HandleExceptionAsync(e);
+            await ApiErrorHandler?.ProcessError(e);
+        }
+        catch (Exception e)
+        {
+            await CrashReportHandler.HandleExceptionAsync(e);
+            await ApiErrorHandler?.ProcessError(e);
+        }
+    }
+
+    private async Task CloseLockAsync()
+    {
+        var client = await SfinxApiBuilder.GetClientAsync();
+        locksApiClient = new LocksApiClient(client);
+        try
+        {
+            if (!string.IsNullOrEmpty(Key?.Lock?.Id) && Key != null)
+            {
+                if (await DialogService.AskConfirmationAsync(Translator, Translator["Confirm/CloseLock"]))
+                {
+                    var keysResponse = await locksApiClient.GetKeyAsync(Key?.Lock?.Id, Key.Id);
+                    await locksApiClient.LockAsync(Key?.Lock?.Id, new LockRequest {Token = keysResponse.Token});
+                    opened = false;
+                }
+            }
+        }
+        catch (ApiException<ProblemDetails> e)
+        {
+            await CrashReportHandler.HandleExceptionAsync(e);
+            await ApiErrorHandler?.ProcessError(e);
+        }
+        catch (Exception e)
+        {
+            await CrashReportHandler.HandleExceptionAsync(e);
+            await ApiErrorHandler?.ProcessError(e);
+        }
+    }
+
+}

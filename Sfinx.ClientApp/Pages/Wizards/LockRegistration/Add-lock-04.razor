@@ -1,0 +1,188 @@
+@page "/locks/add/04"
+@page "/locks/add/04/{VendorId}"
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Services.Storage
+@using Sfinx.App.Shared.Interfaces
+@using Exception = System.Exception
+@inject TranslatorService Localizer
+@inject SfinxLockRegistrationState WizardState
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject NavigationManager NavigationManager
+@inject IUserProfileManager UserProfileManager
+@inject IAlertNotifier AlertNotifier
+@inject ICrashReportHandler CrashReportHandler
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <ErrorBoundary>
+                <ChildContent>
+                    <MudGrid Spacing="3" Justify="Justify.FlexStart">
+                        @if (AddLock)
+                        {
+                            <MudItem lg="8" xs="12">
+                                <MudText Typo="Typo.subtitle1">@Localizer["Select a lock"]</MudText>
+                            </MudItem>
+                            <MudItem lg="4" xs="0"/>
+                            <MudItem lg="8" xs="12">
+                                @if (!string.IsNullOrEmpty(WizardState?.ProductType?.VendorId))
+                                {
+                                    <LockSelector VendorId="@WizardState.ProductType.VendorId" LockSelected="@LockSelected"></LockSelector>
+                                }
+                            </MudItem>
+                            <MudItem lg="4" xs="0"/>
+                        }
+                        @if (selectedLock != null && WizardState != null)
+                        {
+                            <MudItem xs="12">
+                                <MudText Typo="Typo.subtitle1">@Localizer["Configure your lock"]</MudText>
+                            </MudItem>
+                            <MudItem xs="12" lg="4">
+                                <SfinxTextField @bind-Value="@selectedLock.FriendlyName" Label='@Localizer["FriendlyName"]' ContextualHelp='@Localizer["A friendly name for you to identify the lock"]'/>
+                            </MudItem>
+                            <MudItem xs="0" lg="8">
+                            </MudItem>
+                            <MudItem xs="12" lg="4">
+                                <SfinxTextField @bind-Value="@selectedLock.FreeText" Label='@Localizer["FreeText"]' ContextualHelp='@Localizer["An optional description"]'/>
+                            </MudItem>
+                            <MudItem xs="0" lg="8"/>
+                            <MudItem xs="12" lg="4">
+                                <SfinxTextField @bind-Value="@selectedLock.VendorReference" Label='@Localizer["VendorReference"]' ReadOnly="true" ContextualHelp='@string.Format(Localizer["The unique id of your lock"], WizardState.ProductType?.VendorId)'/>
+                            </MudItem>
+                            <MudItem xs="0" lg="8"/>
+                            <MudItem xs="12" lg="6">
+                                <MudCheckBox T="bool" CheckedChanged="PermissionChanged" Label='@string.Format(Localizer["Disclaimer"], WizardState.OrganizationData?.OrganizationName)' Class="rounded-xl"/>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <SfinxButton OnClick="@(async _ => await RegisterLockAsync())" Disabled="@buttonDisabled">@Localizer["Register your lock"]</SfinxButton>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <MudGrid Spacing="3" Justify="Justify.FlexStart">
+                        <MudItem xs="12">
+                            <MudText Color="Color.Error" Typo="Typo.caption">Error occurred !</MudText>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText Color="Color.Error" Typo="Typo.body1">@ex.Message</MudText>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudText Color="Color.Error" Typo="Typo.body2">@ex.ToString()</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </ErrorContent>
+            </ErrorBoundary>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "lockid")]
+    public string? LockId { get; set; }
+
+    [Parameter]
+    public string VendorId { get; set; } = "";
+
+    private IUsersApiClient usersApiClient = null!;
+    private ILocksApiClient locksApiClient = null!;
+    private string? organizationExternalRef;
+    private VendorLock? selectedLock;
+    private bool AddLock => string.IsNullOrEmpty(LockId);
+    private string? userId;
+    private bool buttonDisabled = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = await SfinxApiBuilder.GetClientAsync();
+        userId = await UserProfileManager.GetUserIdAsync();
+
+        usersApiClient = new UsersApiClient(httpClient);
+        locksApiClient = new LocksApiClient(httpClient);
+        if (!AddLock)
+        {
+            var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await locksApiClient.GetLockAsync(LockId));
+            if (apiResult.Success)
+            {
+                var lockResponse = apiResult.Response;
+                var lck = lockResponse.Lock;
+                selectedLock = new VendorLock()
+                {
+                    Location = lck.Location, FreeText = lck.FreeText,
+                    FriendlyName = lck.FriendlyName, VendorReference = lck.VendorReference,
+                    VendorProductId = lck.ProductType.VendorProductId
+                };
+            }
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private async Task RegisterLockAsync()
+    {
+        var lockRegistrationRequest = new RegisterLockRequest
+        {
+            VendorReference = selectedLock?.VendorReference, VendorProductId = selectedLock?.VendorProductId,
+            FreeText = selectedLock?.FreeText, FriendlyName = selectedLock?.FriendlyName,
+            Location = selectedLock?.Location
+        };
+
+        string lockId = LockId ?? "";
+        if (AddLock)
+        {
+            var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient.RegisterLockForUserAsync(userId, lockRegistrationRequest));
+            if (apiResult.Success)
+            {
+                lockId = apiResult.Response.Lock.Id;
+                NextStep();
+            }
+            else
+            {
+                if (apiResult.HttpStatus == 409)
+                {
+                    await AlertNotifier.ShowAlertAsync("The lock is already registered.  We have just assigned the correct permissions now.", "Lock Exists", false);
+                    var apiLockResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient.GetUserLocksAsync(userId));
+                    if (apiLockResult.Success)
+                    {
+                        var userLocks = apiLockResult.Response;
+                        var existingLock = userLocks.Locks.FirstOrDefault(l => l.VendorReference.Equals(this.selectedLock?.VendorReference));
+                        if (existingLock != null)
+                        {
+                            lockId = existingLock.Id;
+                        }
+                        NextStep();
+                    }
+                }
+            }
+        }
+    }
+
+    private async Task LockSelected(VendorLock vendorLock)
+    {
+        try
+        {
+            organizationExternalRef = WizardState?.LockExternalRef;
+            selectedLock = vendorLock;
+        }
+        catch (Exception e)
+        {
+            await CrashReportHandler.HandleExceptionAsync(e);
+        }
+    }
+
+    private void NextStep()
+    {
+        NavigationManager.NavigateTo("locks/add/05");
+    }
+
+    private void PermissionChanged(bool permission)
+    {
+        buttonDisabled = !permission;
+        StateHasChanged();
+    }
+
+}

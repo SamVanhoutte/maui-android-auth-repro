@@ -1,0 +1,91 @@
+@page "/locks/add/02"
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Services.Storage
+@using Sfinx.App.Shared.Interfaces
+@inject TranslatorService Localizer
+@inject SfinxLockRegistrationState LockRegistrationState
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject IUserProfileManager ProfileManager
+@inject NavigationManager NavigationManager
+@inject ICrashReportHandler CrashReportHandler
+<style>
+    li::before {
+        content: "•";
+        font-size: 4rem;
+        vertical-align: middle;
+        color: #2DD497;
+        margin-inline-end: 10px;
+    }
+</style>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.subtitle1">@string.Format(Localizer["Make sure your lock is installed correctly"], LockRegistrationState.ProductType?.VendorId)</MudText>
+                </MudItem>
+                <MudItem lg="7" xs="11">
+                    @if (LockRegistrationState.ProductType != null)
+                    {
+                        <ul>
+                            <li>@string.Format(Localizer["install-01"], LockRegistrationState.ProductType?.Name)</li>
+                            <li>@Localizer["install-02"]</li>
+                            <li>@Localizer["install-03"] @LockRegistrationState.ProductType?.VendorId</li>
+                            @if (!string.IsNullOrEmpty(LockRegistrationState.ProductType?.InstallationDocumentationUrl))
+                            {
+                                <li>
+                                    <a href="@LockRegistrationState.ProductType?.InstallationDocumentationUrl" target="_blank">@Localizer["install-04"]</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </MudItem>
+                <MudItem lg="5" xs="1" />
+                <MudItem xs="12">
+                    <SfinxButton Disabled="@(!enableForward)" OnClick="@(async () => await ForwardAsync())">@Localizer["My lock is installed correctly"]</SfinxButton>
+                </MudItem>
+            </MudGrid>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    private Product? selectedLockType;
+    private IEnumerable<string> connectedVendors;
+    private bool enableForward = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LockRegistrationState.EnsureDataLoadedAsync();
+        var httpClient = await SfinxApiBuilder.GetClientAsync();
+        var userId = await ProfileManager.GetUserIdAsync();
+        var usersApiClient = new UsersApiClient(httpClient);
+        var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient.GetVendorsAsync(userId));
+        enableForward = true;
+        if (apiResult.Response != null)
+        {
+            connectedVendors = apiResult.Response.VendorStatuses
+                .Where(v=>v.Vendor.IsSupported)
+                .Where(v=>v.AuthenticationState.TokenState== TokenState.Valid)
+                .Select(v => v.Vendor.Id).Distinct();
+        }
+    }
+
+    private async Task ForwardAsync()
+    {
+        var selectedVendorId = LockRegistrationState?.ProductType?.VendorId;
+        if (connectedVendors != null && connectedVendors.Any(v => v.Equals(selectedVendorId)))
+        {
+            // The user already has access to the vendor, so we skip the step
+            NavigationManager.NavigateTo("locks/add/04");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("locks/add/03");
+        }
+    }
+}

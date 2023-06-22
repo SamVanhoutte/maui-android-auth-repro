@@ -1,0 +1,236 @@
+@inject TranslatorService Localizer
+@inject ICrashReportHandler CrashReportHandler
+@inject SfinxLockRegistrationState LockRegistrationState
+@inject IUserProfileManager ProfileManager
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IAppStorageProvider AppStorageProvider
+@inherits RefreshablePageBase
+@page "/settings"
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Services.Storage
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Extensions
+@attribute [Authorize]
+<MudGrid Spacing="0">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h1">@Localizer.GetTitle()</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.caption">Version : @AppInfo.Current.VersionString</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        <MudLink Href="crashes" Underline="Underline.Always" Typo="Typo.body1">@Localizer["CrashReportView"]</MudLink> -
+        <MudLink OnClick="@(async () => await ClearLocalStorageAsync())" Underline="Underline.Always" Typo="Typo.body1">@Localizer["ClearCache"]</MudLink> -
+        <MudLink Href="playground" Underline="Underline.Always" Typo="Typo.body1">@Localizer["Playground"]</MudLink>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    @if (isAuthenticated)
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.h2">@Localizer["Connected Lock Types"]</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            @if (connectedVendors != null)
+            {
+                if (connectedVendors.Any())
+                {
+                    <MudItem xs="12"></MudItem>
+                    <MudGrid>
+                        @foreach (var vendorStatus in connectedVendors)
+                        {
+                            <MudItem xs="4">
+                                <SquareSelection IsSelected="false" OnSelected='@(() => NavigationManager.NavigateTo($"vendorstatus/{vendorStatus.Vendor.Id}"))'>
+                                    <MudImage Src='@($"images/vendors/{vendorStatus.Vendor.Name}/logo-square.png".ToLower())' ObjectPosition="ObjectPosition.Center" ObjectFit="ObjectFit.ScaleDown" Style="display:block;margin-left: auto;margin-right: auto;width: 70%; margin-top: 5%"></MudImage>
+                                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="@GetColor(vendorStatus)">@Localizer[$"LockAuth/{vendorStatus.AuthenticationState.TokenState}"]</MudText>
+                                </SquareSelection>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                }
+                else
+                {
+                    <MudText Typo="Typo.caption">@Localizer["No lock types connected"]</MudText>
+                }
+            }
+            else
+            {
+                <LoadingPatienceComponent Small="true"></LoadingPatienceComponent>
+            }
+        </MudItem>
+        <MudItem xs="12">
+            <hr/>
+        </MudItem>
+        @if (!string.IsNullOrEmpty(userId))
+        {
+            <MudItem xs="12">
+                <MudText Typo="Typo.body1">@userId</MudText>
+                <MudText Typo="Typo.body2">(@Localizer["UserIdExplanation"])</MudText>
+            </MudItem>
+            <MudItem xs="12">
+                <hr/>
+            </MudItem>
+        }
+    }
+    @if (!string.IsNullOrEmpty(selectedEnvironment))
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.h2">@Localizer["Connected environment"]</MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <SfinxButton Mode='@GetEnvironmentButtonMode("prd")' OnClick="@(async () => await SaveEnvironmentAsync("prd"))">Production</SfinxButton>
+            <SfinxButton Mode='@GetEnvironmentButtonMode("uat")' OnClick="@(async () => await SaveEnvironmentAsync("uat"))">Test</SfinxButton>
+            <SfinxButton Mode='@GetEnvironmentButtonMode("dev")' OnClick="@(async () => await SaveEnvironmentAsync("dev"))">Dev</SfinxButton>
+        </MudItem>
+        <MudItem xs="12">
+            <hr/>
+        </MudItem>
+    }
+    <MudItem xs="12">
+        <SfinxButton FullWidth="true" OnClick="@(async () => await ClearLocalStorageAsync())">@Localizer["ClearCache"]</SfinxButton>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        <SfinxButton FullWidth="true" Mode="SfinxButton.ButtonMode.Subtle" OnClick="@(async () => await SignOutAsync())">@Localizer["Sign Out"]</SfinxButton>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        <MudLink Href="https://www.sfinxinside.com/privacy-policy" Underline="Underline.Always" Typo="Typo.body1" Target="_blank">@Localizer["Privacy policy"]</MudLink>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        @if (unlockedToDeleteUser)
+        {
+            <SfinxButton FullWidth="true" Mode="SfinxButton.ButtonMode.Warning" OnClick="@(async () => await DeleteUserAsync())">@Localizer["Delete user"]</SfinxButton>
+        }
+        else
+        {
+            <SfinxButton FullWidth="true" Mode="SfinxButton.ButtonMode.Subtle" OnClick="@(async () => await DeleteUserAsync())">@Localizer["Unlock to delete user"]</SfinxButton>
+        }
+    </MudItem>
+</MudGrid>
+@* <CascadingAuthenticationState> *@
+@*     <AuthorizeView> *@
+@*         <Authorized> *@
+@*         </Authorized> *@
+@*         <NotAuthorized> *@
+@*             <AuthorizationRequiredComponent/> *@
+@*         </NotAuthorized> *@
+@*     </AuthorizeView> *@
+@* </CascadingAuthenticationState> *@
+
+
+@code
+{
+    bool isAuthenticated = false;
+    bool unlockedToDeleteUser = false;
+    string userId = "";
+    private ICollection<VendorStatus> connectedVendors;
+    private string? selectedEnvironment;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            isAuthenticated = await ProfileManager.IsAuthenticatedAsync();
+            selectedEnvironment = await AppStorageProvider.ReadFromStorageAsync<string>("environment") ?? "prd";
+            if (isAuthenticated)
+            {
+                userId = await ProfileManager.GetUserIdAsync();
+                await LockRegistrationState.EnsureDataLoadedAsync();
+                var httpClient = await SfinxApiBuilder.GetClientAsync();
+                var usersApiClient = new UsersApiClient(httpClient);
+
+                var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient.GetVendorsAsync(userId));
+                if
+                    (apiResult.Response != null)
+                {
+                    connectedVendors = apiResult.Response.VendorStatuses.Where(v => v.Vendor.IsSupported).ToList();
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private SfinxButton.ButtonMode GetEnvironmentButtonMode(string environment)
+    {
+        return environment.Equals(selectedEnvironment) ? SfinxButton.ButtonMode.Warning : SfinxButton.ButtonMode.Subtle;
+    }
+
+    private async Task ClearLocalStorageAsync()
+    {
+        await CrashReportHandler.ClearAllAsync();
+        await LockRegistrationState.ResetAsync();
+        await AppStorageProvider.DeleteFromStorageAsync("keys", true);
+        await AppStorageProvider.DeleteFromStorageAsync("locks");
+    }
+
+    private Color GetColor(VendorStatus vendorStatus)
+    {
+        return vendorStatus.AuthenticationState.TokenState == TokenState.Valid ?
+            Color.Success : Color.Warning;
+    }
+
+    private async Task SaveEnvironmentAsync(string environment)
+    {
+        if (selectedEnvironment != environment)
+        {
+            if (await DialogService.AskConfirmationAsync(Localizer, Localizer["Confirm/ChangeEnvironment"]))
+            {
+                await AppStorageProvider.SaveToStorageAsync("environment", environment);
+                selectedEnvironment = environment;
+                await ProfileManager.SignOutAsync();
+                await ClearLocalStorageAsync();
+                NavigationManager.NavigateTo("/");
+            }
+        }
+    }
+
+    private async Task DeleteUserAsync()
+    {
+        if (!unlockedToDeleteUser)
+        {
+            unlockedToDeleteUser = true;
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(userId) &&
+                await DialogService.AskConfirmationAsync(Localizer, Localizer["Delete user"], Localizer["Confirm/RemoveUser"]))
+            {
+                var httpClient = await SfinxApiBuilder.GetClientAsync();
+                var usersApiClient = new UsersApiClient(httpClient);
+
+                var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient.DeleteUserAsync(userId));
+                if (apiResult.Success)
+                {
+                    await ProfileManager.SignOutAsync();
+                    await ClearLocalStorageAsync();
+                    NavigationManager.NavigateTo("/");
+                }
+            }
+        }
+    }
+
+    private async Task SignOutAsync()
+    {
+        await ProfileManager.SignOutAsync();
+        NavigationManager.NavigateTo("/");
+    }
+}

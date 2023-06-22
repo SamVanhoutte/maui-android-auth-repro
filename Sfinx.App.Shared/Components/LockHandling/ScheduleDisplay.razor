@@ -1,0 +1,48 @@
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Services.Extensions;
+    @if (Schedule.ActivePeriod == null)
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.body1">No period limitation</MudText>
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.caption">From</MudText>
+            <MudText Typo="Typo.body1">
+                @Schedule.ActivePeriod?.StartUtcDateTimeOffset.Print()
+            </MudText>
+        </MudItem>
+        <MudItem xs="12">
+            <MudText Typo="Typo.caption">To</MudText>
+            <MudText Typo="Typo.body1">
+                @Schedule.ActivePeriod?.StopUtcDateTimeOffset.Print()
+            </MudText>
+        </MudItem>
+    }
+    @if (Schedule.WeekCalendar == null)
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.caption">No time limit</MudText>
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.caption">Active calendar</MudText>
+            <MudList>
+            @foreach(var day in Schedule.WeekCalendar.Timeslots)
+            {
+                <MudListItem Dense="true">@day.Key.ToString(): @string.Join(" - " , day.Value)</MudListItem>
+            }
+            </MudList>
+        </MudItem>
+    }
+
+@code {
+
+    [Parameter]
+    public PermissionSchedule Schedule { get; set; } = new PermissionSchedule();
+
+}

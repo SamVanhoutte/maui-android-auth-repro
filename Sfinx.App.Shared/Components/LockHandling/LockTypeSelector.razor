@@ -1,0 +1,110 @@
+@using Sfinx.Backend.WebAPI.Client
+@using Microsoft.Extensions.Options
+@using Sfinx.App.Shared.Components.General
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Exception = System.Exception
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject TranslatorService Localizer
+@inject IVendorService VendorService
+@if (Vendors == null)
+{
+    <LoadingPatienceComponent WaitingMessage='@Localizer["Retrieving supported locks"]'/>
+}
+else
+{
+    <MudGrid Spacing="0">
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <MudItem xs="12">
+                <MudText Typo="Typo.subtitle1" Align="Align.Left">@Title</MudText>
+            </MudItem>
+        }
+        <MudItem xs="12">
+            <MudGrid Spacing="1">
+                <MudItem xs="12">
+                    <SquareSelectionContainer
+                        Items="@(Vendors.Select(v => new SquareSelectionOption(v.Name, GetLogo(v), v)))"
+                        OnSelectedItem="@(async v => await VendorSelected((Vendor) v))">
+                    </SquareSelectionContainer>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" md="3"/>
+        <MudItem xs="12" md="3"/>
+    </MudGrid>
+    @if (Products == null && SelectedVendor != null)
+    {
+        <LoadingPatienceComponent WaitingMessage='@Localizer["Retrieving supported products"]'/>
+    }
+    if (Products != null)
+    {
+        <MudGrid>
+            <MudItem xs="12">
+                <MudText Typo="Typo.subtitle1" Align="Align.Left">@Localizer["Choose your lock"]</MudText>
+            </MudItem>
+            <MudItem xs="12">
+                <MudGrid Spacing="1">
+                    <SquareSelectionContainer
+                        Items="@(Products.Select(p => new SquareSelectionOption(p.Name, "images/locktype_nuki_30.jpg", p)))"
+                        OnSelectedItem="@(async p => await LockTypeSelected((Product) p))">
+                    </SquareSelectionContainer>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public int CardSize { get; set; }
+
+    [Parameter]
+    public EventCallback<Product> OnLockSelected { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    public ICollection<Vendor>? Vendors { get; set; }
+    public Vendor? SelectedVendor { get; set; }
+    public ICollection<Product>? Products { get; set; }
+
+    private string CardSizeStyle => $"width: {CardSize}px; height: {CardSize}px";
+
+    private IVendorsApiClient vendorsApiClient = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = await SfinxApiBuilder.GetClientAsync();
+        vendorsApiClient = new VendorsApiClient(client);
+        var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await VendorService.GetVendorsAsync());
+        if (apiResult.Success)
+        {
+            Vendors = apiResult.Response.ToList();
+        }
+    }
+
+
+    private async Task VendorSelected(Vendor vendor)
+    {
+        SelectedVendor = vendor;
+        var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await VendorService.GetVendorProductsAsync(vendor.Id));
+        if (apiResult.Success)
+        {
+            Products = apiResult.Response.ToList();
+        }
+    }
+
+    private async Task LockTypeSelected(Product product)
+    {
+        await OnLockSelected.InvokeAsync(product);
+    }
+
+    private string GetLogo(Vendor vendor)
+    {
+        return $"images/vendors/{vendor.Name}/logo-square.png".ToLower();
+    }
+
+}

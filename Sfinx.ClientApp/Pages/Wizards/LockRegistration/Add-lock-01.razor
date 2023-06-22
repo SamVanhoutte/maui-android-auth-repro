@@ -1,0 +1,62 @@
+@page "/locks/add/01"
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Services.Storage
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Services.Api
+@inject TranslatorService Localizer
+@inject SfinxLockRegistrationState LockRegistrationState
+@inject NavigationManager NavigationManager
+@inject ICrashReportHandler CrashReportHandler
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <MudGrid Spacing="3" Justify="Justify.FlexStart">
+                <MudItem lg="6" sm="11">
+                    <MudText Align="Align.Left" Typo="Typo.body1">@Localizer["Register a new lock"]</MudText>
+                </MudItem>
+                <MudItem lg="6" sm="1"/>
+                <MudItem lg="6" md="8" xs="12">
+                    <LockTypeSelector CardSize="140" OnLockSelected="@(SelectLockType)" Title='@Localizer["Select the brand"]'/>
+                </MudItem>
+                <MudItem lg="6" md="4" xs="0"/>
+                <MudItem lg="4" sm="11">
+                    <SfinxButton Disabled="@(selectedLockType == null)" OnClick="@(async _ => await ContinueLockTypeAsync())">@Localizer["Continue"]</SfinxButton>
+                </MudItem>
+                <MudItem lg="8" sm="1"/>
+                <MudItem lg="4" sm="11">
+                    <SfinxButton Mode="SfinxButton.ButtonMode.Subtle" FullWidth="true" OnClick="@(async _ => await AddSimulatedLockAsync())">@Localizer["Add simulated lock"]</SfinxButton>
+                </MudItem>
+                <MudItem lg="8" sm="1"/>
+            </MudGrid>
+        </Authorized>
+        <NotAuthorized>
+            <AuthorizationRequiredComponent/>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    private Product? selectedLockType;
+
+    
+    private void SelectLockType(Product lockType)
+    {
+        selectedLockType = lockType;
+    }
+
+    private async Task ContinueLockTypeAsync()
+    {
+        if (selectedLockType != null)
+        {
+            await LockRegistrationState.SetProductTypeAsync(selectedLockType);
+            NavigationManager.NavigateTo("locks/add/02");
+        }
+    }
+
+    private async Task AddSimulatedLockAsync()
+    {
+            await LockRegistrationState.SetProductTypeAsync(ProductService.SimulatedLockType);
+            NavigationManager.NavigateTo("/locks/add/04/sfinx");
+    }
+
+}

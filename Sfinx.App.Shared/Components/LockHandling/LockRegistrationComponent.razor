@@ -1,0 +1,25 @@
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Sfinx.App.Shared.Components.General
+@using Sfinx.App.Shared.Models.Configuration
+@using Microsoft.Extensions.Options
+@inject TranslatorService Localizer
+@inject IOptions<PortalSettings> PortalSettings
+
+<MudGrid Spacing="0">
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h3">@Localizer["NoLocksTitle"]</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.body1">@Localizer["NoLocksMessage"]</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <SfinxButton Href='@("locks/add/01")'>@Localizer["AddLock"]</SfinxButton>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+}

@@ -1,0 +1,73 @@
+@page "/crashes"
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Models.ErrorHandling
+@using Sfinx.App.Shared.Services.Extensions
+@using Sfinx.ClientApp.Services.Tracing
+@inject TranslatorService Localizer
+@inject ICrashReportHandler CrashReportHandler
+@inject AppTracer AppTracer
+<MudGrid Spacing="0">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h1">@Localizer.GetTitle()</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    <MudItem xs="12">
+        <MudTextField T="string" FullWidth="true" Lines="@AppTracer.MaxLineCount" Text="@AppTracer.GetTrace()"></MudTextField>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    @if (crashReports != null)
+    {
+        <MudItem xs="12">
+            @if (@crashReports.Any())
+            {
+                <MudList>
+                    @foreach (var report in crashReports)
+                    {
+                        <MudListItem Icon="@Icons.Material.Filled.Error" Href='@($"crash/{report.ReportId}")'>@report.Timestamp.PrintHistoricalTime(Localizer) - @report.ErrorMessage</MudListItem>
+                    }
+                </MudList>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2">@Localizer["CrashReports/None"]</MudText>
+            }
+        </MudItem>
+        <MudItem xs="12"/>
+        <MudItem xs="12">
+            <SfinxButton FullWidth="true" OnClick="@(async () => await ClearReportsAsync())">@Localizer["CrashReports/Clear"]</SfinxButton>
+        </MudItem>
+    }
+    <MudItem xs="12"/>
+    <MudItem xs="12">
+        <SfinxButton Mode="SfinxButton.ButtonMode.Subtle" Href="settings">@Localizer["Back"]</SfinxButton>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private IEnumerable<CrashReport>? crashReports = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCrashReportsAsync();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadCrashReportsAsync()
+    {
+        crashReports = await CrashReportHandler.GetCrashReportsAsync();
+        crashReports = crashReports.OrderByDescending(cr => cr.Timestamp);
+    }
+
+
+    private async Task ClearReportsAsync()
+    {
+        await CrashReportHandler.ClearAllAsync();
+        await LoadCrashReportsAsync();
+        StateHasChanged();
+    }
+
+}

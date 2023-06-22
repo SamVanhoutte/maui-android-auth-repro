@@ -1,0 +1,233 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Sign In" xml:space="preserve">
+        <value>Aanmelden</value>
+    </data>
+    <data name="Sign Out" xml:space="preserve">
+        <value>Afmelden</value>
+    </data>
+    <data name="OpenLock" xml:space="preserve">
+        <value>Open slot</value>
+    </data>
+    <data name="CloseLock" xml:space="preserve">
+        <value>Sluit slot</value>
+    </data>
+    <data name="Remove" xml:space="preserve">
+        <value>Verwijder</value>
+    </data>
+    <data name="KeyHolder" xml:space="preserve">
+        <value>Sleutelbos</value>
+    </data>
+    <data name="Intro" xml:space="preserve">
+        <value>Sfinx biedt een technologisch platform aan dat toelaat om eender welke smart lock te beheren en aan te sturen op een heel eenvoudige maar veilige manier.  We bieden verschillende scenarios aan waarin klanten op een heel veilige manier toegangscontrole willen delen met andere partijen.</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Welkom</value>
+    </data>
+    <data name="SfinxLock" xml:space="preserve">
+        <value>Een Sfinx gestuurd slot</value>
+    </data>
+    <data name="MainLayout/Title" xml:space="preserve">
+        <value>Sfinx</value>
+    </data>
+    <data name="FriendlyName" xml:space="preserve">
+        <value>Naam</value>
+    </data>
+    <data name="FreeText" xml:space="preserve">
+        <value>Vrije tekst</value>
+    </data>
+    <data name="VendorReference" xml:space="preserve">
+        <value>Merk Referentie</value>
+    </data>
+    <data name="UpdateLock" xml:space="preserve">
+        <value>Update slot</value>
+    </data>
+    <data name="Permissions" xml:space="preserve">
+        <value>Rechten</value>
+    </data>
+    <data name="KeyToken" xml:space="preserve">
+        <value>Sleutel token</value>
+    </data>
+    <data name="UpdateKey" xml:space="preserve">
+        <value>Update sleutel</value>
+    </data>
+    <data name="Nav/Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Nav/Locks" xml:space="preserve">
+        <value>Mijn sloten</value>
+    </data>
+    <data name="Nav/Keys" xml:space="preserve">
+        <value>Mijn sleutels</value>
+    </data>
+    <data name="Nav/Admin" xml:space="preserve">
+        <value>Admin</value>
+    </data>
+    <data name="Nav/Orgs" xml:space="preserve">
+        <value>Mijn organizaties</value>
+    </data>
+    <data name="SignInExplanation" xml:space="preserve">
+        <value>Gelieve aan te melden met een bestaande Sfinx gebruiker, of te registreren voor een nieuwe.  Dit is nodig om uw sloten te beheren en te beveiligen.</value>
+    </data>
+    <data name="SignInQuestion" xml:space="preserve">
+        <value>Gelieve aan te melden</value>
+    </data>
+    <data name="Nav/Settings" xml:space="preserve">
+        <value>Instellingen</value>
+    </data>
+    <data name="Settings/Title" xml:space="preserve">
+        <value>Instellingen</value>
+    </data>
+    <data name="ClearCache" xml:space="preserve">
+        <value>Maak cache leeg</value>
+    </data>
+    <data name="UserId" xml:space="preserve">
+        <value>Gebruikers ID</value>
+    </data>
+    <data name="UserIdExplanation" xml:space="preserve">
+        <value>kan gebruikt worden voor support doeleinden</value>
+    </data>
+    <data name="NoLocksMessage" xml:space="preserve">
+        <value>Oops, het lijkt hier nog wat te leeg.  Om een slot te installeren en te registreren, kan je hieronder op de knop klikken om de wizard te volgen.</value>
+    </data>
+    <data name="AddLock" xml:space="preserve">
+        <value>Voeg een slot toe</value>
+    </data>
+    <data name="NoLocksTitle" xml:space="preserve">
+        <value>Registreer een slot</value>
+    </data>
+    <data name="CrashReports/Title" xml:space="preserve">
+        <value>Foutmeldingen</value>
+    </data>
+    <data name="CrashReportView" xml:space="preserve">
+        <value>Bekijk foutmeldingen</value>
+    </data>
+    <data name="time/minutesago" xml:space="preserve">
+        <value>{0} minuten geleden</value>
+    </data>
+    <data name="time/now" xml:space="preserve">
+        <value>zonet</value>
+    </data>
+    <data name="time/secondsago" xml:space="preserve">
+        <value>{0} seconden geleden</value>
+    </data>
+    <data name="time/today" xml:space="preserve">
+        <value>vandaag</value>
+    </data>
+    <data name="CrashReports/None" xml:space="preserve">
+        <value>Dat ziet er top uit!  Geen crashes in de app voor jou. </value>
+    </data>
+    <data name="CrashReports/Clear" xml:space="preserve">
+        <value>Wis crash geschiedenis</value>
+    </data>
+    <data name="Back" xml:space="preserve">
+        <value>Keer terug</value>
+    </data>
+    <data name="CrashReports/NotExist" xml:space="preserve">
+        <value>Er is geen crash gevonden met die ID.</value>
+    </data>
+    <data name="CrashDetail/Title" xml:space="preserve">
+        <value>Crash details</value>
+    </data>
+    <data name="ExternalReference" xml:space="preserve">
+        <value>Externe referentie</value>
+    </data>
+    <data name="Get started" xml:space="preserve">
+        <value>Start</value>
+    </data>
+    <data name="Loading user details" xml:space="preserve">
+        <value>Profiel wordt geladen</value>
+    </data>
+    <data name="CompleteFinish" xml:space="preserve">
+        <value>Vervolledig &amp; bevestig</value>
+    </data>
+    <data name="OrganizationNotFound" xml:space="preserve">
+        <value>The organisatie werd niet gevonden.</value>
+    </data>
+    <data name="Phone" xml:space="preserve">
+        <value>Telefoon nr</value>
+    </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="GivenName" xml:space="preserve">
+        <value>Voornaam</value>
+    </data>
+    <data name="FamilyName" xml:space="preserve">
+        <value>Familie naam</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="Danger Zone" xml:space="preserve">
+        <value>Gevaren zone</value>
+    </data>
+    <data name="Nav/Connections" xml:space="preserve">
+        <value>Connecties</value>
+    </data>
+    <data name="Connections/Subtitle" xml:space="preserve">
+        <value>Beheer je service providers</value>
+    </data>
+    <data name="Connections/Patience" xml:space="preserve">
+        <value>De verschillende partijen worden opgehaald</value>
+    </data>
+    <data name="Connections/MyConnections" xml:space="preserve">
+        <value>Gelinkte organisaties</value>
+    </data>
+    <data name="Connections/MyOrganizations" xml:space="preserve">
+        <value>Beschikbare organisaties</value>
+    </data>
+    <data name="Confirm/RemoveConnection" xml:space="preserve">
+        <value>Ben je zeker dat je deze connectie wil stopzetten?</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Gelieve te bevestigen</value>
+    </data>
+    <data name="Connected environment" xml:space="preserve">
+        <value>Gelinkte omgeving</value>
+    </data>
+    <data name="Confirm/ChangeEnvironment" xml:space="preserve">
+        <value>Je zal afgemeld worden.  Weet je zeker dat je wil switchen van omgeving?</value>
+    </data>
+    <data name="UserNotFoundByEmail" xml:space="preserve">
+        <value>Geen gebruiker gevonden voor dat email adres</value>
+    </data>
+    <data name="Owner" xml:space="preserve">
+        <value>Eigenaar</value>
+    </data>
+    <data name="Playground" xml:space="preserve">
+        <value>Playground</value>
+    </data>
+    <data name="Organization" xml:space="preserve">
+        <value>Organizatie</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+        <value>Zoek</value>
+    </data>
+    <data name="Yes" xml:space="preserve">
+        <value>Ja</value>
+    </data>
+    <data name="No" xml:space="preserve">
+        <value>Neen</value>
+    </data>
+    <data name="Delete user" xml:space="preserve">
+        <value>Verwijder uw data</value>
+    </data>
+    <data name="Confirm/RemoveUser" xml:space="preserve">
+        <value>Ben je zeker dat je je gebruiker wil verwijderen?  Al jouw data zal permanent verwijderd blijven.</value>
+    </data>
+    <data name="Unlock to delete user" xml:space="preserve">
+        <value>Verwijder gebruiker (ontgrendel)</value>
+    </data>
+</root>

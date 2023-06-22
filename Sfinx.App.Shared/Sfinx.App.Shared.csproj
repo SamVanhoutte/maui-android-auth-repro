@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Flurl" Version="3.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.22" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.1" />
+        <PackageReference Include="Microsoft.Identity.Client" Version="4.47.0" />
+        <PackageReference Include="MudBlazor" Version="6.4.1" />
+        <PackageReference Include="Sfinx.Backend.WebAPI.Client" Version="0.9.597" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\images" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Languages\LockLanguageResources.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LockLanguageResources.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Languages\WizardLanguageResources.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>WizardLanguageResources.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Pages\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Languages\WizardLanguageResources.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>WizardLanguageResources.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Languages\LockLanguageResources.en.Designer.cs">
+        <DependentUpon>LockLanguageResources.en.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+</Project>

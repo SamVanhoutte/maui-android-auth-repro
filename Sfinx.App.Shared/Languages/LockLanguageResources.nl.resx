@@ -1,0 +1,206 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="LockEdit/Patience" xml:space="preserve">
+        <value>Slot wordt opgehaald</value>
+    </data>
+    <data name="LockEdit/Manage" xml:space="preserve">
+        <value>Beheer je slot</value>
+    </data>
+    <data name="LockEdit/Subtitle" xml:space="preserve">
+        <value>Opent deuren</value>
+    </data>
+    <data name="LockEdit/Title" xml:space="preserve">
+        <value>Mijn slot</value>
+    </data>
+    <data name="Locks/Patience" xml:space="preserve">
+        <value>Sloten worden opgehaald</value>
+    </data>
+    <data name="Locks/Subtitle" xml:space="preserve">
+        <value>Beheer je sloten of registreer een nieuw slot</value>
+    </data>
+    <data name="Locks/Title" xml:space="preserve">
+        <value>Mijn sloten</value>
+    </data>
+    <data name="KeyLabel" xml:space="preserve">
+        <value>Label</value>
+    </data>
+    <data name="Keys/GenerateKey" xml:space="preserve">
+        <value>Maak een sleutel aan</value>
+    </data>
+    <data name="KeyOneTime" xml:space="preserve">
+        <value>Eenmalige sleutel</value>
+    </data>
+    <data name="Keys/Patience" xml:space="preserve">
+        <value>Sleutels worden opgehaald</value>
+    </data>
+    <data name="Keys/Subtitle" xml:space="preserve">
+        <value>Uw sleutelbos</value>
+    </data>
+    <data name="Key/Patience" xml:space="preserve">
+        <value>Sleutel wordt opgehaald</value>
+    </data>
+    <data name="Permissions/Patience" xml:space="preserve">
+        <value>Rechten worden opgehaald</value>
+    </data>
+    <data name="UpdateLockSuccess" xml:space="preserve">
+        <value>Het slot werd geupdated</value>
+    </data>
+    <data name="KeyGenerationSuccess" xml:space="preserve">
+        <value>De sleutel werd correct aangemaakt</value>
+    </data>
+    <data name="ActivityLog" xml:space="preserve">
+        <value>Logboek</value>
+    </data>
+    <data name="Keys/Title" xml:space="preserve">
+        <value>Uw sleutels</value>
+    </data>
+    <data name="Confirm/OpenLock" xml:space="preserve">
+        <value>Weet je zeker dat je het slot wil openen?</value>
+    </data>
+    <data name="KeyEdit/Title" xml:space="preserve">
+        <value>Sleutel details</value>
+    </data>
+    <data name="You own this lock" xml:space="preserve">
+        <value>Je bent eigenaar van dit slot</value>
+    </data>
+    <data name="NoKeysFoundUser" xml:space="preserve">
+        <value>Er zijn geen sleutels toegewezen aan u voor dit slot.  Gelieve de eigenaar te contacteren in geval je toegang nodig hebt.</value>
+    </data>
+    <data name="NoKeysFoundOwner" xml:space="preserve">
+        <value>Er zijn nog geen sleutels voor dit slot.  Gelieve er één aan te maken om het te openen.</value>
+    </data>
+    <data name="OwnedBy" xml:space="preserve">
+        <value>{0} is eigenaar van dit slot</value>
+    </data>
+    <data name="LockStatus/Unlocked" xml:space="preserve">
+        <value>Niet gesloten</value>
+    </data>
+    <data name="LockStatus/Locked" xml:space="preserve">
+        <value>Gesloten</value>
+    </data>
+    <data name="LockStatus/Unknown" xml:space="preserve">
+        <value>Status onbekend</value>
+    </data>
+    <data name="BatteryMessage" xml:space="preserve">
+        <value>Batterij niveau {0}: {1}%</value>
+    </data>
+    <data name="LockErrorConnection" xml:space="preserve">
+        <value>Slot onbereikbaar</value>
+    </data>
+    <data name="LockStatus/Unkown" xml:space="preserve">
+        <value>Status onbekend</value>
+    </data>
+    <data name="Expired" xml:space="preserve">
+        <value>Credentials zijn vervallen.  Meld opnieuw aan.</value>
+    </data>
+    <data name="Invalid" xml:space="preserve">
+        <value>Credentials zijn ongeldig.  Meld opnieuw aan</value>
+    </data>
+    <data name="LockAuth" xml:space="preserve">
+        <value>We hebben niet langer toegang tot uw slot, door een probleem met de credentials er voor.</value>
+    </data>
+    <data name="NotFound" xml:space="preserve">
+        <value>Uw credentials werden niet gevonden.  Gelieve ze opnieuw te geven door aan te melden.</value>
+    </data>
+    <data name="Relink" xml:space="preserve">
+        <value>Herkoppel {0}</value>
+    </data>
+    <data name="You are not the owner of the lock" xml:space="preserve">
+        <value>U bent niet de eigenaar van het slot en heeft daardoor geen toegang tot de details.</value>
+    </data>
+    <data name="Register new lock" xml:space="preserve">
+        <value>Registreer een slot</value>
+    </data>
+    <data name="Retrieve locks" xml:space="preserve">
+        <value>Haal sloten op</value>
+    </data>
+    <data name="Make sure the authorization is completed before retrieving your locks." xml:space="preserve">
+        <value>Gelieve te zorgen dat de authenticatie bij {0} geslaagd is, vooraleer de sloten op te halen.</value>
+    </data>
+    <data name="Connected Lock Types" xml:space="preserve">
+        <value>Gelinkte slotmerken</value>
+    </data>
+    <data name="No lock types connected" xml:space="preserve">
+        <value>Nog geen sloten merken verbonden.</value>
+    </data>
+    <data name="Confirm/RevokeVendorAccess" xml:space="preserve">
+        <value>Weet je zeker dat je de toegang wil verwijderen voor jouw {0} sloten?</value>
+    </data>
+    <data name="LockAuth/Expired" xml:space="preserve">
+        <value>Toegang vervallen</value>
+    </data>
+    <data name="LockAuth/Invalid" xml:space="preserve">
+        <value>Toegang incorrect</value>
+    </data>
+    <data name="LockAuth/NotFound" xml:space="preserve">
+        <value>Geen tokens gevonden</value>
+    </data>
+    <data name="LockAuth/Unknown" xml:space="preserve">
+        <value>Status onbekend</value>
+    </data>
+    <data name="LockAuth/Valid" xml:space="preserve">
+        <value>Toegang OK</value>
+    </data>
+    <data name="Valid" xml:space="preserve">
+        <value>We hebben een veilige toegang voor uw sloten.</value>
+    </data>
+    <data name="VendorAuthorizationStatus/Title" xml:space="preserve">
+        <value>Sloten toegang</value>
+    </data>
+    <data name="Confirm/DeleteLock" xml:space="preserve">
+        <value>Weet je zeker dat je het slot wil verwijderen?</value>
+    </data>
+    <data name="Remove lock" xml:space="preserve">
+        <value>Slot verwijderen</value>
+    </data>
+    <data name="Add simulated lock" xml:space="preserve">
+        <value>Nieuw virtueel slot</value>
+    </data>
+    <data name="KeyEdit/Patience" xml:space="preserve">
+        <value>Sleutelinfo wordt opgehaald</value>
+    </data>
+    <data name="Add key" xml:space="preserve">
+        <value>Maak sleutel aan</value>
+    </data>
+    <data name="Keys/AssignKey" xml:space="preserve">
+        <value>Sleutel overdragen</value>
+    </data>
+    <data name="KeyPermission/Reference" xml:space="preserve">
+        <value>Referentie</value>
+    </data>
+    <data name="KeyPermission/FreeText" xml:space="preserve">
+        <value>Boodschap</value>
+    </data>
+    <data name="UserEmail" xml:space="preserve">
+        <value>Email van de gebruiker</value>
+    </data>
+    <data name="KeySuccessfullyAssigned" xml:space="preserve">
+        <value>De sleutel werd correct toegewezen</value>
+    </data>
+    <data name="KeyAssignmentFailed" xml:space="preserve">
+        <value>De sleutel kon niet worden toegekend</value>
+    </data>
+    <data name="Find lock by reference" xml:space="preserve">
+        <value>Zoek slot op referentie</value>
+    </data>
+    <data name="LockNotFound" xml:space="preserve">
+        <value>Geen slot gevonden</value>
+    </data>
+    <data name="Confirm/CloseLock" xml:space="preserve">
+        <value>Weet je zeker dat je het slot wil sluiten?</value>
+    </data>
+    <data name="ManageLocks" xml:space="preserve">
+        <value>Beheer uw slot</value>
+    </data>
+</root>

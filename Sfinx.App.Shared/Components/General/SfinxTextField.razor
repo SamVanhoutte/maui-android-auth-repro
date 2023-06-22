@@ -1,0 +1,44 @@
+@typeparam T
+<MudGrid Spacing="0">
+    <MudItem xs="11">
+        <MudTextField T="@T" Value="@Value" ValueChanged="@(async(e)=>await TriggerValueChangeAsync(e))" ReadOnly="@ReadOnly" Label="@Label" Variant="@Variant" Class="rounded-xl"/>
+    </MudItem>
+    <MudItem xs="1">
+        @if (!string.IsNullOrEmpty(ContextualHelp))
+        {
+            <SfinxContextualHelp HelpText="@ContextualHelp"></SfinxContextualHelp>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    private T? textValue;
+
+    [Parameter]
+    public T? Value
+    {
+        get => textValue;
+        set => textValue = value;
+    }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? ContextualHelp { get; set; }
+
+    [Parameter]
+    public bool ReadOnly { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<T?> ValueChanged { get; set; }
+
+    public Variant Variant => ReadOnly ? Variant.Text : Variant.Outlined;
+
+    private async Task TriggerValueChangeAsync(T value)
+    {
+        await ValueChanged.InvokeAsync(value);
+    }
+
+}

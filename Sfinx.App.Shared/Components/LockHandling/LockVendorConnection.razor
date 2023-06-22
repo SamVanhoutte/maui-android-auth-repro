@@ -1,0 +1,177 @@
+@inject IUserProfileManager UserProfileManager
+@using Sfinx.Backend.WebAPI.Client
+@using System.Net
+@using Flurl
+@using Microsoft.AspNetCore.Http
+@using MudBlazor.Utilities
+@using Sfinx.App.Shared.Components.General
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Models.Registration
+@using Sfinx.App.Shared.Services.MultiLinguality
+@using Exception = System.Exception
+@inject NavigationManager NavigationManager
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject TranslatorService Localizer
+@if (string.IsNullOrEmpty(State))
+{
+    <LoadingPatienceComponent Small="true" WaitingMessage='@Localizer["Creating login link"]'/>
+}
+else
+{
+    <MudGrid Spacing="3" Justify="Justify.FlexStart">
+        <MudItem xs="12">
+            @if (string.IsNullOrEmpty(LockAuthUrl))
+            {
+                <SfinxButton Href="@RedirectUri">@Localizer["Continue"]</SfinxButton>
+            }
+            else
+            {
+                <SfinxButton Mode="@(Warning ? SfinxButton.ButtonMode.Warning : SfinxButton.ButtonMode.Default)" Disabled="@(string.IsNullOrEmpty(LockAuthUrl))" OnClick="VendorLinkClicked" Href="@(LockAuthUrl)">@string.Format(Localizer[Warning ? "Relink" : "Connect account"], VendorId)</SfinxButton>
+                <MudText Typo="Typo.body1" Color="Color.Info">@Localizer["You will be taken to the log-in page of"] @VendorId</MudText>
+            }
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private ProductAdapter? lockAdapter;
+    private Product? lockType;
+    private string? vendorId;
+    private string? lockAdapterId;
+
+    
+    [Parameter]
+    public EventCallback VendorLinkClicked { get; set; }
+    
+    [Parameter]
+    public bool Warning { get; set; }
+
+    [Parameter]
+    public string VendorId
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(vendorId)) return vendorId;
+            if (LockType != null) return LockType.VendorId;
+            throw new ArgumentException("Impossible to get the vendor Id from your configured properties");
+        }
+        set => vendorId = value;
+    }
+
+    [Parameter]
+    public string ProductTypeId { get; set; }
+
+    [Parameter]
+    public string? LockAdapterId
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(lockAdapterId)) return lockAdapterId;
+            if (LockType?.ProductAdapter != null) return LockType.ProductAdapter.AdapterId;
+            return null;
+        }
+        set => lockAdapterId = value;
+    }
+
+    [Parameter]
+    public Product? LockType
+    {
+        get => lockType;
+        set => lockType = value;
+    }
+
+    [Parameter]
+    public string? RedirectUri { get; set; }
+
+    private IVendorAuthTokenApiClient? vendorsApiClient;
+    public string? UserId { get; set; }
+    private string? State { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserProfileManager != null)
+        {
+            UserId = await UserProfileManager.GetUserIdAsync();
+        }
+        if (string.IsNullOrEmpty(State))
+        {
+            await EnsureLockAdapterAsync();
+            var client = await SfinxApiBuilder.GetClientAsync();
+            vendorsApiClient = new VendorAuthTokenApiClient(client);
+            if (!string.IsNullOrEmpty(VendorId) && NavigationManager != null)
+            {
+                // To do : redirect to scheme of the app ?
+                var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await vendorsApiClient.AnnounceVendorAuthenticationAsync(VendorId, new AnnounceVendorAuthenticationRequest
+                {
+                    UserId = UserId, FrontendRedirectUrl = FrontEndRedirectUrl
+                }));
+                if (apiResult.Success)
+                {
+                    State = apiResult.Response.State;
+                }
+            }
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private string FrontEndRedirectUrl
+    {
+        get
+        {
+            var redirectUrl = string.Format(RedirectUri, VendorId);
+            if (Uri.TryCreate(redirectUrl, UriKind.Absolute, out _))
+            {
+                return redirectUrl;
+            }
+            var currentUri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+            return $"{currentUri.Scheme}://{currentUri.Host}:{currentUri.Port}".AppendPathSegment(redirectUrl);
+        }
+    }
+
+    private async Task<ProductAdapter?> EnsureLockAdapterAsync()
+    {
+        if (lockAdapter != null) return lockAdapter;
+        if (lockType?.ProductAdapter != null)
+        {
+            lockAdapter = lockType.ProductAdapter;
+        }
+        else
+        {
+            var client = await SfinxApiBuilder.GetClientAsync();
+            if (!string.IsNullOrEmpty(lockAdapterId))
+            {
+                var productAdaptersApiClient = new ProductAdaptersApiClient(client);
+                var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await productAdaptersApiClient.GetProductAdaptersAsync());
+                lockAdapter = apiResult.Response?.ProductAdapters?.FirstOrDefault(pa => pa.AdapterId.Equals(lockAdapterId));
+            }
+            else
+            {
+                var vendorApiClient = new VendorsApiClient(client);
+                var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await vendorApiClient.GetVendorProductsAsync(VendorId));
+                lockAdapter = !string.IsNullOrEmpty(ProductTypeId) ? 
+                    apiResult.Response?.Products?.FirstOrDefault(p => p.Id.Equals(ProductTypeId))?.ProductAdapter : 
+                    apiResult.Response?.Products?.FirstOrDefault()?.ProductAdapter;                
+            }
+        }
+        return lockAdapter;
+    }
+
+
+    public string LockAuthUrl
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(lockAdapter?.SignInUri))
+            {
+                return "";
+            }
+            var baseUri = lockAdapter.SignInUri;
+            baseUri = baseUri.Replace("{clientId}", lockAdapter.ClientId);
+            baseUri = baseUri.Replace("{required_scope}", WebUtility.UrlEncode(lockAdapter.RequiredApiScope));
+            baseUri = baseUri.Replace("{redirect_uri}", WebUtility.UrlEncode(lockAdapter.RedirectUri));
+            return $"{baseUri}&state={State}";
+        }
+    }
+
+}

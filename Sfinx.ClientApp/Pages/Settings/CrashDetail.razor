@@ -1,0 +1,50 @@
+@page "/crash/{ReportId}"
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Models.ErrorHandling
+@using Sfinx.App.Shared.Services.Extensions
+@inject TranslatorService Localizer
+@inject ICrashReportHandler CrashReportHandler
+@attribute [Authorize]
+
+<MudGrid Spacing="0">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h1">@Localizer.GetTitle()</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    @if (crashReport != null)
+    {
+        <MudItem xs="12"><MudTextField Value="@crashReport.UserId" Label="@Localizer["UserId"]" Variant="Variant.Text"></MudTextField></MudItem>
+        <MudItem xs="12"><MudTextField Value="@crashReport.Timestamp.PrintHistoricalTime(Localizer)" Label="@Localizer["CrashReports/Time"]" Variant="Variant.Text"></MudTextField></MudItem>
+        <MudItem xs="12"><MudTextField Value="@crashReport.ErrorMessage" Label="@Localizer["CrashReports/Message"]" Variant="Variant.Text" Lines="2"></MudTextField></MudItem>
+        <MudItem xs="12"><MudTextField Value="@crashReport.Stacktrace" Label="Stack trace" Variant="Variant.Text" Lines="15"></MudTextField></MudItem>
+        <MudItem xs="12"><hr/></MudItem>
+        <MudItem xs="12">
+            <SfinxButton Href="crashes" Mode="SfinxButton.ButtonMode.Subtle">@Localizer["Back"]</SfinxButton>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public string? ReportId { get; set; }
+
+    private CrashReport crashReport;
+    private string? errorMessage;
+    
+    protected async override Task OnInitializedAsync()
+    {
+        if (Guid.TryParse(ReportId, out var reportId))
+        {
+            crashReport = await CrashReportHandler.GetCrashReportAsync(reportId);    
+        }
+        else
+        {
+            errorMessage = Localizer["CrashReports/NotExist"];
+        }
+        await  base.OnInitializedAsync();
+    }
+
+}

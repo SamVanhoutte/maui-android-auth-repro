@@ -1,0 +1,218 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Finish" xml:space="preserve">
+        <value>Klaar</value>
+    </data>
+    <data name="Install your lock" xml:space="preserve">
+        <value>Installeer slot</value>
+    </data>
+    <data name="Link lock account" xml:space="preserve">
+        <value>Koppel slot</value>
+    </data>
+    <data name="Lock type selection" xml:space="preserve">
+        <value>Slot type</value>
+    </data>
+    <data name="Select your lock" xml:space="preserve">
+        <value>Configureer slot</value>
+    </data>
+    <data name="Set up Sfinx" xml:space="preserve">
+        <value>Sfinx setup</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Welkom</value>
+    </data>
+    <data name="Set up your smartlock" xml:space="preserve">
+        <value>Configureer uw smartlock</value>
+    </data>
+    <data name="Invitation code" xml:space="preserve">
+        <value>Activitatiecode</value>
+    </data>
+    <data name="If you have received an invitation code, please validate it below." xml:space="preserve">
+        <value>Als u een activatiecode kreeg, gelieve ze hieronder te valideren.</value>
+    </data>
+    <data name="Continue" xml:space="preserve">
+        <value>Volgende</value>
+    </data>
+    <data name="Enter validation code" xml:space="preserve">
+        <value>Voer validatie code in</value>
+    </data>
+    <data name="Invitation code is not valid or expired" xml:space="preserve">
+        <value>De activatiecode is niet (langer) geldig</value>
+    </data>
+    <data name="Invitation code successfully validated" xml:space="preserve">
+        <value>De activatiecode werd goedgekeurd</value>
+    </data>
+    <data name="Itsme integration coming soon" xml:space="preserve">
+        <value>Itsme authenticatie komt er aan</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Registreer</value>
+    </data>
+    <data name="Select an existing lock from the list or register a new lock" xml:space="preserve">
+        <value>Kies een bestaand slot or registreer een nieuw</value>
+    </data>
+    <data name="Select the brand" xml:space="preserve">
+        <value>Kies het merk</value>
+    </data>
+    <data name="Set up your Sfinx account" xml:space="preserve">
+        <value>Configureer jouw Sfinx account</value>
+    </data>
+    <data name="Specify Lock" xml:space="preserve">
+        <value>Kies het slot</value>
+    </data>
+    <data name="Validate code" xml:space="preserve">
+        <value>Valideer code</value>
+    </data>
+    <data name="foodbag/OrganizationName" xml:space="preserve">
+        <value>Foodbag</value>
+    </data>
+    <data name="foodbag/ProjectName" xml:space="preserve">
+        <value>Levering in huis</value>
+    </data>
+    <data name="foodbag/WelcomeText" xml:space="preserve">
+        <value>In deze wizard gaan we u helpen om de smart lock te configureren, zodat die klaar is voor onze Foodbag leveringen.  Hierdoor krijgt u alle flexibiliteit om de bestellingen thuis te ontvangen en helpt u ook meer om de wereld een groenere plek te maken.</value>
+    </data>
+    <data name="foodbag/SfinxRegistrationText" xml:space="preserve">
+        <value>Om op een veilige manier toegang te krijgen tot het slot, werken we samen met onze partner Sfinx, die alles veilig houdt.  Hiervoor zal een persoonlijk profiel aangemaakt worden.</value>
+    </data>
+    <data name="sfinx/OrganizationName" xml:space="preserve">
+        <value>Sfinx</value>
+    </data>
+    <data name="sfinx/ProjectName" xml:space="preserve">
+        <value>Smart locks</value>
+    </data>
+    <data name="sfinx/WelcomeText" xml:space="preserve">
+        <value>In deze wizard helpen we uw smart lock te configureren zodat het voor alle Sfinx diensten gebruikt kan worden. </value>
+    </data>
+    <data name="sfinx/SfinxRegistrationText" xml:space="preserve">
+        <value>Om alles veilig te houden en volledig onder jouw controle, dient u een account aan te maken, of aan te melden met een bestaande Sfinx account.</value>
+    </data>
+    <data name="Register a new lock" xml:space="preserve">
+        <value>Registreer een nieuw slot</value>
+    </data>
+    <data name="Retrieving supported locks" xml:space="preserve">
+        <value>Ondersteunde merken worden opgehaald</value>
+    </data>
+    <data name="Retrieving supported products" xml:space="preserve">
+        <value>Product types ophalen...</value>
+    </data>
+    <data name="Choose your lock" xml:space="preserve">
+        <value>Kies jouw slot</value>
+    </data>
+    <data name="Make sure your lock is installed correctly" xml:space="preserve">
+        <value>Zorg er voor dat uw {0} slot correct is geïnstalleerd.</value>
+    </data>
+    <data name="install-01" xml:space="preserve">
+        <value>Zorg er voor dat uw {0} slot op de juiste manier en locatie is geïnstalleerd.</value>
+    </data>
+    <data name="install-02" xml:space="preserve">
+        <value>Ga na dat uw slot geconnecteerd is met het internet</value>
+    </data>
+    <data name="install-03" xml:space="preserve">
+        <value>Verifieer dat uw slot zichtbaar is in de app van</value>
+    </data>
+    <data name="install-04" xml:space="preserve">
+        <value>Volg de instructies om het slot te installeren</value>
+    </data>
+    <data name="My lock is installed correctly" xml:space="preserve">
+        <value>Mijn slot is goed geïnstalleerd</value>
+    </data>
+    <data name="Connect your account to Sfinx" xml:space="preserve">
+        <value>Koppel jouw {0} account met Sfinx</value>
+    </data>
+    <data name="Give authorization to Sfinx to use your smart lock" xml:space="preserve">
+        <value>Geef smart-lock toegang aan Sfinx door uw {0} account te connecteren.</value>
+    </data>
+    <data name="Creating login link" xml:space="preserve">
+        <value>Veilige link wordt gemaakt...</value>
+    </data>
+    <data name="Connect account" xml:space="preserve">
+        <value>Koppel {0} account</value>
+    </data>
+    <data name="You will be taken to the log-in page of" xml:space="preserve">
+        <value>Je zal doorverwezen worden naar de login pagina van</value>
+    </data>
+    <data name="Select a lock" xml:space="preserve">
+        <value>Kies een slot</value>
+    </data>
+    <data name="Configure your lock" xml:space="preserve">
+        <value>Configureer jouw slot</value>
+    </data>
+    <data name="Disclaimer" xml:space="preserve">
+        <value>Door dit slot te registreren, geef ik {0} de rechten om het slot te gebruiken voor niets meer dan het geauthorizeerd gebruik van mijn slot.</value>
+    </data>
+    <data name="Register your lock" xml:space="preserve">
+        <value>Link uw slot</value>
+    </data>
+    <data name="Retrieving your locks from the vendor" xml:space="preserve">
+        <value>Sloten ophalen bij {0}...</value>
+    </data>
+    <data name="A friendly name for you to identify the lock" xml:space="preserve">
+        <value>Een herkenbare naam die u aan het slot kan geven</value>
+    </data>
+    <data name="An optional description" xml:space="preserve">
+        <value>Een vrije beschrijving</value>
+    </data>
+    <data name="The unique id of your lock" xml:space="preserve">
+        <value>Het unieke nummer van uw slot bij {0}</value>
+    </data>
+    <data name="Reference linking your lock to the provider" xml:space="preserve">
+        <value>De referentie bij {0} waarmee uw slot gekoppeld wordt.</value>
+    </data>
+    <data name="CompletionMessage" xml:space="preserve">
+        <value>Uw slot is nu gekoppeld met {0} voor {1}.  U kan ten alle tijde de toegang aanpassen in uw portaal.</value>
+    </data>
+    <data name="See your locks" xml:space="preserve">
+        <value>Bekijk de sloten</value>
+    </data>
+    <data name="foodbag/CompletionText" xml:space="preserve">
+        <value>Geniet van zorgeloze thuisleveringen met Foodbag!</value>
+    </data>
+    <data name="sfinx/CompletionText" xml:space="preserve">
+        <value>Geniet van vlotte toegangscontrole met Sfinx</value>
+    </data>
+    <data name="You are all set up" xml:space="preserve">
+        <value>Top! Alles klaar</value>
+    </data>
+    <data name="MemberWelcome" xml:space="preserve">
+        <value>Hey, en welkom op het Sfinx platform.  Je werd uitgenodigd als medewerker van {0}, die Sfinx gekozen hebben voor hun {1} project.  In deze wizard, zullen we je begeleiden om van start te gaan in een veilige manier.</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profiel</value>
+    </data>
+    <data name="MemberGuidance" xml:space="preserve">
+        <value>Als medewerker bij {0}, zal je op een veilige manier toegang krijgen tot verschillende locaties en eigendommen van klanten.  Daarom is het cruciaal dat we een uniek en veilig profiel opmaken voor jou.</value>
+    </data>
+    <data name="MemberGuidance2" xml:space="preserve">
+        <value>In de volgende stap, zal je doorverwezen worden naar een logon scherm, waar je een gebruikersnaam en paswoord kan creëren dat zal nodig zijn om het Sfinx platform te gebruiken. </value>
+    </data>
+    <data name="Security setup" xml:space="preserve">
+        <value>Beveiliging</value>
+    </data>
+    <data name="Security" xml:space="preserve">
+        <value>Veiligheid</value>
+    </data>
+    <data name="MemberCompletionMessage" xml:space="preserve">
+        <value>Je bent nu klaar om Sfinx te gebruiken voor {0}.  We raden aan om de Sfinx app te downloaden van jouw app store.</value>
+    </data>
+    <data name="ProfileCompletion" xml:space="preserve">
+        <value>Gelieve jouw profiel te vervolledigen en dan bent u klaar om te beginnen.</value>
+    </data>
+    <data name="Playground/Title" xml:space="preserve">
+        <value>Test area</value>
+    </data>
+    <data name="Add permission" xml:space="preserve">
+        <value>Geef rechten</value>
+    </data>
+</root>

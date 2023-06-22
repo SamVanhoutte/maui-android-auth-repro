@@ -1,0 +1,54 @@
+﻿@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Services.MultiLinguality
+@inject IUserProfileManager UserProfile
+@inject TranslatorService Translator
+@inject IAppStorageProvider AppStorageProvider
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">
+            <img src='@($"images/sfinx-logo-{environment}.svg")' style="height: 20px"/>
+        </a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="mylocks">
+                <span class="oi oi-lock-locked" aria-hidden="true"></span> @Translator["Nav/Locks"]
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="settings">
+                <span class="oi oi-dial" aria-hidden="true"></span> @Translator["Nav/Settings"]
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="signoff">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> @Translator["Sign Out"]
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    private string environment = "prd";
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AppStorageProvider != null)
+        {
+            environment = await AppStorageProvider.ReadFromStorageAsync<string>("environment") ?? "prd";
+        }
+    }
+
+}

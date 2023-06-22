@@ -1,0 +1,94 @@
+@page "/vendorstatus/{VendorId}"
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.Backend.WebAPI.Client
+@using Sfinx.App.Shared.Extensions
+@inject TranslatorService Localizer
+@inject IUserProfileManager ProfileManager
+@inject ISfinxApiBuilder SfinxApiBuilder
+@inject IErrorHandler ApiErrorHandler
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@inject IDialogService DialogService
+
+<MudGrid Spacing="0">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h1">@VendorId</MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <hr/>
+    </MudItem>
+    @if (vendorStatus != null)
+    {
+        @if (vendorStatus.AuthenticationState.TokenState != TokenState.Valid)
+        {
+            <MudItem xs="12">
+                <MudTooltip Text='@Localizer["LockAuth"]'>
+                    <MudText Color="Color.Warning" Typo="Typo.body2">@Localizer[vendorStatus.AuthenticationState.TokenState.ToString()]</MudText>
+                    <br/>
+                    <LockVendorConnection Warning="true" RedirectUri='@($"sfinx://vendorstatus/{VendorId}?forcerefresh=true")' VendorId="@VendorId"></LockVendorConnection>
+                </MudTooltip>
+            </MudItem>
+        }
+        else
+        {
+            <MudItem xs="12">
+                <MudText Color="Color.Success" Typo="Typo.body2">@Localizer[vendorStatus.AuthenticationState.TokenState.ToString()]</MudText>
+                <br/>
+                <SfinxButton Mode="SfinxButton.ButtonMode.Warning" FullWidth="true" OnClick="@(async () => await RevokeVendorAccessAsync())">@Localizer["Revoke access"]</SfinxButton>
+            </MudItem>
+        }
+        <MudItem xs="12">
+            <hr/>
+        </MudItem>
+        <MudItem xs="12">
+            <SfinxButton Href="settings" Mode="SfinxButton.ButtonMode.Subtle" FullWidth="true">@Localizer["Back"]</SfinxButton>
+        </MudItem>
+    }
+    else
+    {
+        <MudItem xs="12">
+            <LoadingPatienceComponent></LoadingPatienceComponent>
+        </MudItem>
+    }
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public string? VendorId { get; set; }
+
+    string userId = "";
+    private VendorStatus vendorStatus;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userId = await ProfileManager.GetUserIdAsync();
+        await LoadVendorStatusesAsync();
+    }
+
+    private async Task LoadVendorStatusesAsync()
+    {
+        var httpClient = await SfinxApiBuilder.GetClientAsync();
+        var usersApiClient = new UsersApiClient(httpClient);
+        var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await usersApiClient.GetVendorsAsync(userId));
+        if (apiResult.Response != null)
+        {
+            vendorStatus = apiResult.Response.VendorStatuses.FirstOrDefault(vs => vs.Vendor?.Id.Equals(VendorId) ?? false);
+        }
+    }
+
+    private async Task RevokeVendorAccessAsync()
+    {
+        if (await DialogService.AskConfirmationAsync(Localizer, string.Format(Localizer["Confirm/RevokeVendorAccess"], VendorId)))
+        {
+            var httpClient = await SfinxApiBuilder.GetClientAsync();
+            var authClient = new VendorAuthTokenApiClient(httpClient);
+            var apiResult = await ApiErrorHandler.ExecuteAndHandleExceptionsAsync(async () => await authClient.RemoveVendorAuthorizationAsync(VendorId, userId));
+            if (apiResult.Success)
+            {
+                NavigationManager.NavigateTo("settings");
+            }
+        }
+    }
+
+}

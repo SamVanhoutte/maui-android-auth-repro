@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="LockEdit/Title" xml:space="preserve">
+        <value>My lock</value>
+    </data>
+    <data name="LockEdit/Subtitle" xml:space="preserve">
+        <value>Opening doors</value>
+    </data>
+    <data name="LockEdit/Manage" xml:space="preserve">
+        <value>Manage your lock</value>
+    </data>
+    <data name="Locks/Patience" xml:space="preserve">
+        <value>Retrieving locks</value>
+    </data>
+    <data name="Locks/Subtitle" xml:space="preserve">
+        <value>Access your locks, or register a new one.</value>
+    </data>
+    <data name="Locks/Title" xml:space="preserve">
+        <value>My locks</value>
+    </data>
+    <data name="LockEdit/Patience" xml:space="preserve">
+        <value>Retrieving lock</value>
+    </data>
+    <data name="Keys/GenerateKey" xml:space="preserve">
+        <value>Generate a key</value>
+    </data>
+    <data name="KeyLabel" xml:space="preserve">
+        <value>Tag</value>
+    </data>
+    <data name="KeyOneTime" xml:space="preserve">
+        <value>One time use</value>
+    </data>
+    <data name="KeyGenerationSuccess" xml:space="preserve">
+        <value>The key was successfully generated</value>
+    </data>
+    <data name="ActivityLog" xml:space="preserve">
+        <value>Activity log</value>
+    </data>
+    <data name="UpdateLockSuccess" xml:space="preserve">
+        <value>The lock was successfully updated.</value>
+    </data>
+    <data name="Permissions/Patience" xml:space="preserve">
+        <value>Reading permissions</value>
+    </data>
+    <data name="Keys/Patience" xml:space="preserve">
+        <value>Retrieving keys</value>
+    </data>
+    <data name="Keys/Subtitle" xml:space="preserve">
+        <value>Your key holder</value>
+    </data>
+    <data name="Key/Patience" xml:space="preserve">
+        <value>Retrieving key</value>
+    </data>
+    <data name="Keys/Title" xml:space="preserve">
+        <value>Your keys</value>
+    </data>
+    <data name="Confirm/OpenLock" xml:space="preserve">
+        <value>Are you sure you want to open the Lock? </value>
+    </data>
+    <data name="KeyEdit/Title" xml:space="preserve">
+        <value>Edit your key</value>
+    </data>
+    <data name="You own this lock" xml:space="preserve">
+        <value>You own this lock</value>
+    </data>
+    <data name="NoKeysFoundOwner" xml:space="preserve">
+        <value>There are no keys yet for this lock.  Create one to open the lock with.</value>
+    </data>
+    <data name="NoKeysFoundUser" xml:space="preserve">
+        <value>There are no keys assigned to you for this lock.  Please contact the owner if you need access.</value>
+    </data>
+    <data name="OwnedBy" xml:space="preserve">
+        <value>Owned by {0}</value>
+    </data>
+    <data name="LockStatus/Unlocked" xml:space="preserve">
+        <value>Unlocked</value>
+    </data>
+    <data name="LockStatus/Unknown" xml:space="preserve">
+        <value>State not retrieved</value>
+    </data>
+    <data name="LockStatus/Locked" xml:space="preserve">
+        <value>Locked</value>
+    </data>
+    <data name="BatteryMessage" xml:space="preserve">
+        <value>Battery level {0}: {1}%</value>
+    </data>
+    <data name="LockErrorConnection" xml:space="preserve">
+        <value>Unreachable</value>
+    </data>
+    <data name="LockStatus/Unkown" xml:space="preserve">
+        <value>State not retrieved</value>
+    </data>
+    <data name="LockAuth" xml:space="preserve">
+        <value>We no longer have access to your lock, because of an issue with your credentials for it.</value>
+    </data>
+    <data name="Expired" xml:space="preserve">
+        <value>Your credentials have expired.  Please authorize again.</value>
+    </data>
+    <data name="Invalid" xml:space="preserve">
+        <value>Your credentials are invalid.  Please authorize again.</value>
+    </data>
+    <data name="NotFound" xml:space="preserve">
+        <value>Your credentials are not found.  Please provide them by logging on.</value>
+    </data>
+    <data name="Relink" xml:space="preserve">
+        <value>Relink {0}</value>
+    </data>
+    <data name="You are not the owner of the lock" xml:space="preserve">
+        <value>You are not the owner of the lock.  You cannot access the details.</value>
+    </data>
+    <data name="Register new lock" xml:space="preserve">
+        <value>Register new lock</value>
+    </data>
+    <data name="Retrieve locks" xml:space="preserve">
+        <value>Retrieve locks</value>
+    </data>
+    <data name="Make sure the authorization is completed before retrieving your locks." xml:space="preserve">
+        <value>Make sure the authorization at {0} is completed before retrieving your locks.</value>
+    </data>
+    <data name="Connected Lock Types" xml:space="preserve">
+        <value>Connected Lock Types</value>
+    </data>
+    <data name="No lock types connected" xml:space="preserve">
+        <value>No lock types connected yet.</value>
+    </data>
+    <data name="Confirm/RevokeVendorAccess" xml:space="preserve">
+        <value>Are you sure you want to remove access to your {0} locks? </value>
+    </data>
+    <data name="LockAuth/NotFound" xml:space="preserve">
+        <value>No tokens found</value>
+    </data>
+    <data name="LockAuth/Valid" xml:space="preserve">
+        <value>Authorization OK</value>
+    </data>
+    <data name="LockAuth/Invalid" xml:space="preserve">
+        <value>Tokens invalid</value>
+    </data>
+    <data name="LockAuth/Expired" xml:space="preserve">
+        <value>Tokens expired</value>
+    </data>
+    <data name="LockAuth/Unknown" xml:space="preserve">
+        <value>Status unknown</value>
+    </data>
+    <data name="Valid" xml:space="preserve">
+        <value>We can successfully perform actions on your behalf for these locks.</value>
+    </data>
+    <data name="VendorAuthorizationStatus/Title" xml:space="preserve">
+        <value>Lock vendor access</value>
+    </data>
+    <data name="Confirm/DeleteLock" xml:space="preserve">
+        <value>Are you sure you want to remove the Lock? </value>
+    </data>
+    <data name="Remove lock" xml:space="preserve">
+        <value>Remove lock</value>
+    </data>
+    <data name="Add simulated lock" xml:space="preserve">
+        <value>Add simulated lock</value>
+    </data>
+    <data name="KeyEdit/Patience" xml:space="preserve">
+        <value>Retrieving details</value>
+    </data>
+    <data name="Add key" xml:space="preserve">
+        <value>Add key</value>
+    </data>
+    <data name="Keys/AssignKey" xml:space="preserve">
+        <value>Assign key</value>
+    </data>
+    <data name="KeyPermission/Reference" xml:space="preserve">
+        <value>Reference</value>
+    </data>
+    <data name="KeyPermission/FreeText" xml:space="preserve">
+        <value>Free text</value>
+    </data>
+    <data name="UserEmail" xml:space="preserve">
+        <value>Email of user</value>
+    </data>
+    <data name="KeySuccessfullyAssigned" xml:space="preserve">
+        <value>The key was successfully assigned</value>
+    </data>
+    <data name="KeyAssignmentFailed" xml:space="preserve">
+        <value>Failed to assign the key</value>
+    </data>
+    <data name="Find lock by reference" xml:space="preserve">
+        <value>Find lock by reference</value>
+    </data>
+    <data name="LockNotFound" xml:space="preserve">
+        <value>The lock does not exist</value>
+    </data>
+    <data name="Confirm/CloseLock" xml:space="preserve">
+        <value>Are you sure you want to close the Lock? </value>
+    </data>
+    <data name="ManageLocks" xml:space="preserve">
+        <value>Manage your lock</value>
+    </data>
+</root>

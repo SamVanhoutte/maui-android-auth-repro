@@ -1,0 +1,49 @@
+@page "/authenticate"
+@using Microsoft.Identity.Client
+@using Sfinx.App.Shared.Interfaces
+@using Sfinx.App.Shared.Models.Security
+@inject ITokenStorage TokenStorage
+@inject IUserProfileManager ProfileManager
+<h3>AuthenticationPage</h3>
+<SfinxButton OnClick="@(async() => await LoginAsync())">Sign in</SfinxButton>
+<br />
+<b>Authenticated: @authenticated</b>
+<br />
+<b>Token content:</b>
+<ul>
+    @foreach (var token in tokens)
+    {
+        <li><b>@token.Name</b> : @token.Value</li>
+    }
+</ul>
+<br />
+<b>Access Token</b>
+@accessToken
+@code {
+    private string output = "<not set>";
+    private bool authenticated;
+    private IEnumerable<AuthToken> tokens = new List<AuthToken>();
+    private string accessToken;
+    protected override async Task OnInitializedAsync()
+    {
+        authenticated = (await ProfileManager.IsAuthenticatedAsync());
+        tokens = await TokenStorage.GetTokensAsync();
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task LoginAsync()
+    {
+        try
+        {
+            tokens = await ProfileManager.RefreshTokensAsync();
+            accessToken = await ProfileManager.GetBearerTokenAsync();
+            authenticated = (await ProfileManager.IsAuthenticatedAsync());
+        }
+        catch (MsalClientException authException)
+        {
+            output = authException.ToString();
+        }
+        tokens = await TokenStorage.GetTokensAsync();
+    }
+}

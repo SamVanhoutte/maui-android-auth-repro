@@ -1,0 +1,233 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Sign In" xml:space="preserve">
+        <value>Sign in / Sign Up</value>
+    </data>
+    <data name="Sign Out" xml:space="preserve">
+        <value>Sign Out</value>
+    </data>
+    <data name="OpenLock" xml:space="preserve">
+        <value>Open lock</value>
+    </data>
+    <data name="CloseLock" xml:space="preserve">
+        <value>Close lock</value>
+    </data>
+    <data name="Remove" xml:space="preserve">
+        <value>Remove</value>
+    </data>
+    <data name="KeyHolder" xml:space="preserve">
+        <value>Key holder</value>
+    </data>
+    <data name="Intro" xml:space="preserve">
+        <value>Sfinx provides a platform and technology that allows all smart locks to be managed, operated and shared on one vendor-independent platform. Sfinx is an enabler for producers of locks and objects that need to be closed and unlocked and relieves all users who want to have access and want to share.</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="SfinxLock" xml:space="preserve">
+        <value>A Sfinx-connected lock.</value>
+    </data>
+    <data name="MainLayout/Title" xml:space="preserve">
+        <value>Sfinx</value>
+    </data>
+    <data name="FreeText" xml:space="preserve">
+        <value>Free text</value>
+    </data>
+    <data name="FriendlyName" xml:space="preserve">
+        <value>Friendly name</value>
+    </data>
+    <data name="UpdateLock" xml:space="preserve">
+        <value>Update Lock</value>
+    </data>
+    <data name="VendorReference" xml:space="preserve">
+        <value>Vendor reference</value>
+    </data>
+    <data name="Permissions" xml:space="preserve">
+        <value>Permissions</value>
+    </data>
+    <data name="KeyToken" xml:space="preserve">
+        <value>Key token</value>
+    </data>
+    <data name="UpdateKey" xml:space="preserve">
+        <value>Update key</value>
+    </data>
+    <data name="Nav/Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Nav/Keys" xml:space="preserve">
+        <value>My Keys</value>
+    </data>
+    <data name="Nav/Locks" xml:space="preserve">
+        <value>My Locks</value>
+    </data>
+    <data name="Nav/Admin" xml:space="preserve">
+        <value>Admin</value>
+    </data>
+    <data name="Nav/Orgs" xml:space="preserve">
+        <value>My organizations</value>
+    </data>
+    <data name="SignInExplanation" xml:space="preserve">
+        <value>Please sign in with your existing Sfinx user, or register for a new user. This is needed in order to access and control the locks you have registered.</value>
+    </data>
+    <data name="SignInQuestion" xml:space="preserve">
+        <value>Please sign in</value>
+    </data>
+    <data name="Nav/Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="Settings/Title" xml:space="preserve">
+        <value>Preferences</value>
+    </data>
+    <data name="ClearCache" xml:space="preserve">
+        <value>Clear app cache</value>
+    </data>
+    <data name="UserIdExplanation" xml:space="preserve">
+        <value>can be used for support questions</value>
+    </data>
+    <data name="UserId" xml:space="preserve">
+        <value>User ID</value>
+    </data>
+    <data name="NoLocksMessage" xml:space="preserve">
+        <value>It's looking empty here.  You will have to install and register a lock, by following the wizard that can be started by clicking the link below.</value>
+    </data>
+    <data name="NoLocksTitle" xml:space="preserve">
+        <value>Register your lock</value>
+    </data>
+    <data name="AddLock" xml:space="preserve">
+        <value>Install your lock</value>
+    </data>
+    <data name="CrashReports/Title" xml:space="preserve">
+        <value>Crash reports</value>
+    </data>
+    <data name="CrashReportView" xml:space="preserve">
+        <value>View crash reports</value>
+    </data>
+    <data name="time/now" xml:space="preserve">
+        <value>just now</value>
+    </data>
+    <data name="time/secondsago" xml:space="preserve">
+        <value>{0} seconds ago</value>
+    </data>
+    <data name="time/minutesago" xml:space="preserve">
+        <value>{0} minutes ago</value>
+    </data>
+    <data name="time/today" xml:space="preserve">
+        <value>today</value>
+    </data>
+    <data name="CrashReports/None" xml:space="preserve">
+        <value>Looking good.  No crash reports here!</value>
+    </data>
+    <data name="CrashReports/Clear" xml:space="preserve">
+        <value>Remove crash reports</value>
+    </data>
+    <data name="Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="CrashReports/NotExist" xml:space="preserve">
+        <value>The crash report does not exist</value>
+    </data>
+    <data name="CrashDetail/Title" xml:space="preserve">
+        <value>Crash report</value>
+    </data>
+    <data name="ExternalReference" xml:space="preserve">
+        <value>External Reference</value>
+    </data>
+    <data name="Get started" xml:space="preserve">
+        <value>Get started</value>
+    </data>
+    <data name="Loading user details" xml:space="preserve">
+        <value>Loading user details</value>
+    </data>
+    <data name="CompleteFinish" xml:space="preserve">
+        <value>Complete &amp; finish</value>
+    </data>
+    <data name="OrganizationNotFound" xml:space="preserve">
+        <value>The organization does not exist.</value>
+    </data>
+    <data name="Phone" xml:space="preserve">
+        <value>Phone</value>
+    </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="GivenName" xml:space="preserve">
+        <value>Given name</value>
+    </data>
+    <data name="FamilyName" xml:space="preserve">
+        <value>Family Name</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Email</value>
+    </data>
+    <data name="Danger Zone" xml:space="preserve">
+        <value>Danger zone</value>
+    </data>
+    <data name="Nav/Connections" xml:space="preserve">
+        <value>Connections</value>
+    </data>
+    <data name="Connections/Subtitle" xml:space="preserve">
+        <value>Manage your connections</value>
+    </data>
+    <data name="Connections/Patience" xml:space="preserve">
+        <value>Loading connected parties</value>
+    </data>
+    <data name="Connections/MyConnections" xml:space="preserve">
+        <value>Connected organizations</value>
+    </data>
+    <data name="Connections/MyOrganizations" xml:space="preserve">
+        <value>Available service providers</value>
+    </data>
+    <data name="Confirm/RemoveConnection" xml:space="preserve">
+        <value>Are you sure you want to disconnect this organization?</value>
+    </data>
+    <data name="Confirm" xml:space="preserve">
+        <value>Please confirm</value>
+    </data>
+    <data name="Connected environment" xml:space="preserve">
+        <value>Connected environment</value>
+    </data>
+    <data name="Confirm/ChangeEnvironment" xml:space="preserve">
+        <value>You will be logged out.  Sure you want to switch environment?</value>
+    </data>
+    <data name="UserNotFoundByEmail" xml:space="preserve">
+        <value>No user found with that email</value>
+  </data>
+    <data name="Owner" xml:space="preserve">
+        <value>Owner</value>
+    </data>
+    <data name="Playground" xml:space="preserve">
+        <value>Playground</value>
+    </data>
+    <data name="Organization" xml:space="preserve">
+        <value>Organization</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="Yes" xml:space="preserve">
+        <value>Yes</value>
+    </data>
+    <data name="No" xml:space="preserve">
+        <value>No</value>
+    </data>
+    <data name="Delete user" xml:space="preserve">
+        <value>Delete your account</value>
+    </data>
+    <data name="Confirm/RemoveUser" xml:space="preserve">
+        <value>Are you sure you want to remove your account.  All your data will be deleted permanently.</value>
+    </data>
+    <data name="Unlock to delete user" xml:space="preserve">
+        <value> Delete user (unlock)</value>
+    </data>
+</root>
